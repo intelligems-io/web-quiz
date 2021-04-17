@@ -1,4 +1,3 @@
-import classes from "*.module.css";
 import { Typography, Button, makeStyles } from "@material-ui/core";
 import { ArrowForward } from "@material-ui/icons";
 import React from "react";
@@ -19,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 const WelcomeScreen: React.FC<WelcomeScreenProps> = (props) => {
   const classes = useStyles();
   return (
-    <React.Fragment>
+    <div>
       <Typography variant="h3">Welcome!</Typography>
       <Typography className={classes.subHeader} variant="h5">
         In 5 minutes, we’ll see if we can improve your store’s margins.
@@ -40,7 +39,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = (props) => {
       >
         Let's get started
       </Button>
-    </React.Fragment>
+    </div>
   );
 };
 

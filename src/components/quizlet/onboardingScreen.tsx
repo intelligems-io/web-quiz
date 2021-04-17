@@ -1,6 +1,4 @@
-import classes from "*.module.css";
 import { Typography, Button, makeStyles } from "@material-ui/core";
-import { ArrowForward } from "@material-ui/icons";
 import React from "react";
 
 export interface OnboardingScreenProps {
@@ -16,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
   const classes = useStyles();
   return (
-    <React.Fragment>
+    <div>
       <Typography variant="h3">Onboarding Questions</Typography>
       <Button
         className={classes.button}
@@ -30,7 +28,7 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
       >
         Continue
       </Button>
-    </React.Fragment>
+    </div>
   );
 };
 

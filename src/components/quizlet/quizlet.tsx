@@ -1,6 +1,4 @@
-import { Button, makeStyles, Paper, Typography } from "@material-ui/core";
-import { ArrowForward } from "@material-ui/icons";
-import { findByLabelText } from "@testing-library/dom";
+import { makeStyles, Paper, Slide } from "@material-ui/core";
 import * as React from "react";
 import { useState } from "react";
 import OnboardingScreen from "./onboardingScreen";
@@ -20,44 +18,69 @@ const useStyles = makeStyles((theme) => ({
     width: "920px",
     margin: "auto",
     padding: "30px",
-    top: 200,
-    // height: 200,
+    top: 100,
+    maxHeight: "500px",
+    height: "auto",
     textAlign: "center",
+    transition: "max-height 2s ease-out",
   },
 }));
 
+const CarouselItem: React.FC<any> = (props) => {
+  return props.display ? (
+    <div className="CarouselItem">
+      {
+        <Slide
+          direction={
+            props.active
+              ? props.isNext
+                ? "left"
+                : "right"
+              : props.isNext
+              ? "right"
+              : "left"
+          }
+          in={props.active}
+          timeout={props.timeout}
+        >
+          <div>{props.child}</div>
+        </Slide>
+      }
+    </div>
+  ) : null;
+};
+
 const Quizlet: React.FC<QuizletProps> = () => {
   const classes = useStyles();
+  const slideTransitionTimeout = 500;
 
   const [currentScreen, setCurrentScreen] = useState(SCREENS.WelcomeScreen);
 
   const handleNextScreen = function () {
-    if (currentScreen == SCREENS.WelcomeScreen) {
+    if (currentScreen === SCREENS.WelcomeScreen) {
       setCurrentScreen(SCREENS.OnboardingScreen);
     }
-  };
-
-  const screenSelector = () => {
-    switch (currentScreen) {
-      case SCREENS.WelcomeScreen: {
-        return <WelcomeScreen handleNextScreen={handleNextScreen} />;
-      }
-      case SCREENS.OnboardingScreen: {
-        return (
-          <OnboardingScreen
-            handleNextScreen={handleNextScreen}
-          ></OnboardingScreen>
-        );
-      }
-      default: {
-        return <WelcomeScreen handleNextScreen={handleNextScreen} />;
-      }
+    if (currentScreen === SCREENS.OnboardingScreen) {
+      setCurrentScreen(SCREENS.WelcomeScreen);
     }
   };
 
   return (
     <Paper variant="elevation" className={classes.quizContainer}>
-      {screenSelector()}
+      <CarouselItem
+        display={currentScreen === SCREENS.WelcomeScreen}
+        active={currentScreen === SCREENS.WelcomeScreen}
+        child={<WelcomeScreen handleNextScreen={handleNextScreen} />}
+        timeout={{ enter: 0, exit: slideTransitionTimeout }}
+        isNext
+      />
+      <CarouselItem
+        display={currentScreen === SCREENS.OnboardingScreen}
+        active={currentScreen === SCREENS.OnboardingScreen}
+        child={<OnboardingScreen handleNextScreen={handleNextScreen} />}
+        timeout={slideTransitionTimeout}
+        isNext
+      />
     </Paper>
   );
 };

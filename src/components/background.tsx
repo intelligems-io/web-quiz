@@ -24,7 +24,11 @@ const Background: React.FC<BackgroundProps> = () => {
   return (
     <React.Fragment>
       <div className={classes.background}></div>
-      <img className={classes.logo} src="/full_logo_mono_white.png" />
+      <img
+        alt="intelligems-logo"
+        className={classes.logo}
+        src="/full_logo_mono_white.png"
+      />
     </React.Fragment>
   );
 };
