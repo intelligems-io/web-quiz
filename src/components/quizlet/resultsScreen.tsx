@@ -4,8 +4,9 @@ import NumberFormat from "react-number-format";
 import useEnterKeyPress from "../../utils/useEnterKeyPress";
 import { IFormState } from "./quizlet";
 
-export interface SummaryScreenProps {
-  formState: IFormState;
+export interface ResultsScreenProps {
+  onboardingFormState: IFormState;
+  pricingFormState: IFormState;
   handleNextScreen: Function;
   handlePreviousScreen: Function;
 }
@@ -45,14 +46,44 @@ const calculateSummaryMetrics = (data: any) => ({
     Number(data.orders),
 });
 
-const SummaryScreen: React.FC<SummaryScreenProps> = (props) => {
+const calculateResultsMetrics = (data: any, pricing: any) => {
+  const cvrChange = Number(pricing.cvrChange) / 100;
+  const cvr = Number(data.cvr) * (1 - cvrChange);
+  const priceChange = Number(pricing.priceChange) / 100;
+  const orders = +(Number(data.orders) * (1 - cvrChange)).toFixed(1);
+  const aov = +(Number(data.aov) * (1 + priceChange)).toFixed(2);
+  const cac = Number(data.cac) * (Number(data.cvr) / cvr);
+  return {
+    orders,
+    aov,
+    cvr,
+    cogs: Number(data.cogs),
+    cac,
+    revenue: +(aov * orders).toFixed(2),
+    totalCogs: Number(data.cogs) * orders,
+    totalAcq: +(cac * orders).toFixed(2),
+    totalCost: (cac + Number(data.cogs)) * orders,
+    totalProfit: +((aov - cac - Number(data.cogs)) * orders).toFixed(2),
+  };
+};
+
+const ResultsScreen: React.FC<ResultsScreenProps> = (props) => {
   const classes = useStyles();
-  const { handlePreviousScreen, handleNextScreen, formState } = props;
-  const metrics = calculateSummaryMetrics(formState.data);
-  useEnterKeyPress(() => handleNextScreen());
+  const {
+    handlePreviousScreen,
+    handleNextScreen,
+    onboardingFormState,
+    pricingFormState,
+  } = props;
+  const metrics = calculateSummaryMetrics(onboardingFormState.data);
+  const results = calculateResultsMetrics(
+    onboardingFormState.data,
+    pricingFormState.data
+  );
+  // useEnterKeyPress(() => handleNextScreen());
   return (
     <div>
-      <Typography variant="h5">Store Monthly Summary</Typography>
+      <Typography variant="h5">Effect of a price test</Typography>
       <table className={classes.summaryTable}>
         <tbody>
           <tr className={classes.summaryRow}>
@@ -77,6 +108,27 @@ const SummaryScreen: React.FC<SummaryScreenProps> = (props) => {
                   prefix="$"
                   thousandSeparator
                   value={metrics.aov}
+                  displayType={"text"}
+                />
+                {" AOV"}
+              </Typography>
+            </td>
+            <td className={classes.summaryField}>
+              <Typography className={classes.kpiLabel} variant="h5">
+                <NumberFormat
+                  prefix="$"
+                  thousandSeparator
+                  value={results.revenue}
+                  displayType={"text"}
+                />
+              </Typography>
+              <Typography variant="body1">
+                {results.orders}
+                {" orders * "}
+                <NumberFormat
+                  prefix="$"
+                  thousandSeparator
+                  value={results.aov}
                   displayType={"text"}
                 />
                 {" AOV"}
@@ -117,6 +169,34 @@ const SummaryScreen: React.FC<SummaryScreenProps> = (props) => {
                 {" Acquistion"}
               </Typography>
             </td>
+            <td className={classes.summaryField}>
+              <Typography className={classes.kpiLabel} variant="h5">
+                <NumberFormat
+                  prefix="$"
+                  thousandSeparator
+                  value={results.totalCost}
+                  displayType={"text"}
+                />
+              </Typography>
+              <Typography variant="body1">
+                <NumberFormat
+                  prefix="$"
+                  thousandSeparator
+                  value={results.totalCogs}
+                  displayType={"text"}
+                />
+                {" Gross + Shipping"}
+              </Typography>
+              <Typography variant="body1">
+                <NumberFormat
+                  prefix="$"
+                  thousandSeparator
+                  value={results.totalAcq}
+                  displayType={"text"}
+                />
+                {" Acquistion"}
+              </Typography>
+            </td>
           </tr>
           <tr className={classes.summaryRow}>
             <td className={classes.summaryField}>
@@ -134,11 +214,21 @@ const SummaryScreen: React.FC<SummaryScreenProps> = (props) => {
                 />
               </Typography>
             </td>
+            <td className={classes.summaryField}>
+              <Typography className={classes.kpiLabel} variant="h5">
+                <NumberFormat
+                  prefix="$"
+                  thousandSeparator
+                  value={results.totalProfit}
+                  displayType={"text"}
+                />
+              </Typography>
+            </td>
           </tr>
         </tbody>
       </table>
       <div className={classes.bottomContainer}>
-        <Typography variant="h6">Looking good?</Typography>
+        {/* <Typography variant="h6">Looking good?</Typography> */}
         <Button
           className={classes.bottomButton}
           variant="contained"
@@ -146,9 +236,9 @@ const SummaryScreen: React.FC<SummaryScreenProps> = (props) => {
           color="primary"
           onClick={() => handleNextScreen()}
         >
-          Simulate a price test
+          I want to learn more
         </Button>
-        or press <strong>ENTER</strong>
+        {/* or press <strong>ENTER</strong> */}
       </div>
       <div className={classes.bottomContainer}>
         <Typography variant="h6">Need to make a change?</Typography>
@@ -166,4 +256,4 @@ const SummaryScreen: React.FC<SummaryScreenProps> = (props) => {
   );
 };
 
-export default SummaryScreen;
+export default ResultsScreen;

@@ -3,6 +3,7 @@ import * as React from "react";
 import { useState } from "react";
 import OnboardingScreen from "./onboardingScreen";
 import PriceTestScreen from "./priceTestScreen";
+import ResultsScreen from "./resultsScreen";
 import SummaryScreen from "./summaryScreen";
 import WelcomeScreen from "./welcomeScreen";
 
@@ -13,6 +14,7 @@ const SCREENS = {
   OnboardingScreen: "OnboardingScreen",
   SummaryScreen: "SummaryScreen",
   PriceTestScreen: "PriceTestScreen",
+  ResultsScreen: "ResultsScreen",
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -102,6 +104,7 @@ const Quizlet: React.FC<QuizletProps> = () => {
   );
 
   const moveToScreen = (screen: string) => () => {
+    console.log("moving to ", screen);
     setCurrentScreen(screen);
   };
 
@@ -171,7 +174,7 @@ const Quizlet: React.FC<QuizletProps> = () => {
       }
     }
     if (!firstHidden && pricingFormState.data[lastDisplayed]) {
-      moveToScreen(SCREENS.WelcomeScreen)();
+      moveToScreen(SCREENS.ResultsScreen)();
     }
     if (pricingFormState.data[lastDisplayed] && firstHidden) {
       setPricingFormState({
@@ -230,11 +233,25 @@ const Quizlet: React.FC<QuizletProps> = () => {
         active={currentScreen === SCREENS.PriceTestScreen}
         child={
           <PriceTestScreen
-            handleNextScreen={moveToScreen(SCREENS.WelcomeScreen)}
+            handleNextScreen={moveToScreen(SCREENS.ResultsScreen)}
             handlePreviousScreen={moveToScreen(SCREENS.SummaryScreen)}
             formState={pricingFormState}
             handleChange={handlePricingChange}
             handleFormSubmit={handlePricingFormSubmit}
+          />
+        }
+        timeout={slideTransitionTimeout}
+        isNext
+      />
+      <CarouselItem
+        display={currentScreen === SCREENS.ResultsScreen}
+        active={currentScreen === SCREENS.ResultsScreen}
+        child={
+          <ResultsScreen
+            handleNextScreen={moveToScreen(SCREENS.WelcomeScreen)}
+            handlePreviousScreen={moveToScreen(SCREENS.PriceTestScreen)}
+            onboardingFormState={onboardingFormState}
+            pricingFormState={pricingFormState}
           />
         }
         timeout={slideTransitionTimeout}
