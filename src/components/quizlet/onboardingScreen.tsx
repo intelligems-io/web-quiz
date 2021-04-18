@@ -8,6 +8,8 @@ import {
 
 import React, { useState } from "react";
 import NumberFormat from "react-number-format";
+import { CurrencyFormat, PercentageFormat } from "../../utils/numberFormats";
+import useEnterKeyPress from "../../utils/useEnterKeyPress";
 import { IFormState } from "./quizlet";
 
 export interface OnboardingScreenProps {
@@ -50,56 +52,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface CustomFormatProps {
-  inputRef: (instance: NumberFormat | null) => void;
-  onChange: (event: { target: { name: string; value: string } }) => void;
-  name: string;
-}
-
-function CurrencyFormat(props: CustomFormatProps) {
-  const { inputRef, onChange, ...other } = props;
-
-  return (
-    <NumberFormat
-      {...other}
-      getInputRef={inputRef}
-      onValueChange={(values) => {
-        onChange({
-          target: {
-            name: props.name,
-            value: values.value,
-          },
-        });
-      }}
-      thousandSeparator
-      isNumericString
-      prefix="$ "
-    />
-  );
-}
-
-function PercentageFormat(props: CustomFormatProps) {
-  const { inputRef, onChange, ...other } = props;
-
-  return (
-    <NumberFormat
-      {...other}
-      getInputRef={inputRef}
-      onValueChange={(values) => {
-        onChange({
-          target: {
-            name: props.name,
-            value: values.value,
-          },
-        });
-      }}
-      thousandSeparator
-      isNumericString
-      suffix=" %"
-    />
-  );
-}
-
 const InputRow = function (props: any) {
   const classes = useStyles();
   var inputProps = {};
@@ -140,6 +92,7 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
 
   const { handleFormSubmit, handleChange } = props;
   const { data: formData, display: formDisplay, focus } = props.formState;
+  useEnterKeyPress(() => handleFormSubmit());
 
   return (
     <div>

@@ -1,7 +1,7 @@
 import { Typography, Button, makeStyles } from "@material-ui/core";
 import { ArrowForward } from "@material-ui/icons";
 import React from "react";
-import useEnterKeyPress from "./useEnterKeyPress";
+import useEnterKeyPress from "../../utils/useEnterKeyPress";
 
 export interface WelcomeScreenProps {
   handleNextScreen: Function;
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 const WelcomeScreen: React.FC<WelcomeScreenProps> = (props) => {
   const classes = useStyles();
-  useEnterKeyPress(() => props.handleNextScreen())
+  useEnterKeyPress(() => props.handleNextScreen());
 
   return (
     <form

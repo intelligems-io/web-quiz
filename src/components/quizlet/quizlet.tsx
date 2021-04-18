@@ -2,6 +2,7 @@ import { makeStyles, Paper, Slide } from "@material-ui/core";
 import * as React from "react";
 import { useState } from "react";
 import OnboardingScreen from "./onboardingScreen";
+import SummaryScreen from "./summaryScreen";
 import WelcomeScreen from "./welcomeScreen";
 
 export interface QuizletProps {}
@@ -9,6 +10,7 @@ export interface QuizletProps {}
 const SCREENS = {
   WelcomeScreen: "WelcomeScreen",
   OnboardingScreen: "OnboardingScreen",
+  SummaryScreen: "SummaryScreen",
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -19,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
     margin: "auto",
     padding: "30px",
     top: 100,
-    maxHeight: "500px",
     height: "auto",
     textAlign: "center",
     transition: "max-height 2s ease-out",
@@ -58,18 +59,18 @@ export interface IFormState {
 
 const initialFormState = {
   data: {
-    orders: "",
-    aov: "",
-    cvr: "",
-    cogs: "",
-    cac: "",
+    orders: "30",
+    aov: "45",
+    cvr: "10",
+    cogs: "15",
+    cac: "15",
   },
   display: {
     orders: true,
-    aov: false,
-    cvr: false,
-    cogs: false,
-    cac: false,
+    aov: true,
+    cvr: true,
+    cogs: true,
+    cac: true,
   },
   focus: "orders",
 };
@@ -91,9 +92,12 @@ const Quizlet: React.FC<QuizletProps> = () => {
     });
   };
 
-  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    console.log(event);
-    event.preventDefault();
+  const moveToScreen = (screen: string) => () => {
+    setCurrentScreen(screen);
+  };
+
+  const handleFormSubmit = (event?: React.FormEvent<HTMLFormElement>) => {
+    if (event) event.preventDefault();
     var lastDisplayed = "";
     var firstHidden = "";
     for (const [key, value] of Object.entries(formState.display)) {
@@ -104,10 +108,10 @@ const Quizlet: React.FC<QuizletProps> = () => {
         break;
       }
     }
-    if (!firstHidden) {
-      handleNextScreen();
+    if (!firstHidden && formState.data[lastDisplayed]) {
+      moveToScreen(SCREENS.SummaryScreen)();
     }
-    if (formState.data[lastDisplayed]) {
+    if (formState.data[lastDisplayed] && firstHidden) {
       setFormState({
         ...formState,
         display: {
@@ -119,21 +123,16 @@ const Quizlet: React.FC<QuizletProps> = () => {
     }
   };
 
-  const handleNextScreen = function () {
-    if (currentScreen === SCREENS.WelcomeScreen) {
-      setCurrentScreen(SCREENS.OnboardingScreen);
-    }
-    if (currentScreen === SCREENS.OnboardingScreen) {
-      setCurrentScreen(SCREENS.WelcomeScreen);
-    }
-  };
-
   return (
     <Paper variant="elevation" className={classes.quizContainer}>
       <CarouselItem
         display={currentScreen === SCREENS.WelcomeScreen}
         active={currentScreen === SCREENS.WelcomeScreen}
-        child={<WelcomeScreen handleNextScreen={handleNextScreen} />}
+        child={
+          <WelcomeScreen
+            handleNextScreen={moveToScreen(SCREENS.OnboardingScreen)}
+          />
+        }
         timeout={{ enter: 0, exit: slideTransitionTimeout }}
         isNext
       />
@@ -142,10 +141,23 @@ const Quizlet: React.FC<QuizletProps> = () => {
         active={currentScreen === SCREENS.OnboardingScreen}
         child={
           <OnboardingScreen
-            handleNextScreen={handleNextScreen}
+            handleNextScreen={moveToScreen(SCREENS.SummaryScreen)}
             formState={formState}
             handleChange={handleChange}
             handleFormSubmit={handleFormSubmit}
+          />
+        }
+        timeout={slideTransitionTimeout}
+        isNext
+      />
+      <CarouselItem
+        display={currentScreen === SCREENS.SummaryScreen}
+        active={currentScreen === SCREENS.SummaryScreen}
+        child={
+          <SummaryScreen
+            handleNextScreen={moveToScreen(SCREENS.WelcomeScreen)}
+            handlePreviousScreen={moveToScreen(SCREENS.OnboardingScreen)}
+            formState={formState}
           />
         }
         timeout={slideTransitionTimeout}
