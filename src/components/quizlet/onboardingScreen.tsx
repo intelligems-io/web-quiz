@@ -1,16 +1,27 @@
-import { Typography, Button, makeStyles, TextField } from "@material-ui/core";
+import {
+  Typography,
+  Button,
+  makeStyles,
+  TextField,
+  Fade,
+} from "@material-ui/core";
 
 import React, { useState } from "react";
 import NumberFormat from "react-number-format";
+import { IFormState } from "./quizlet";
 
 export interface OnboardingScreenProps {
   handleNextScreen: Function;
+  formState: IFormState;
+  handleChange: Function;
+  handleFormSubmit: Function;
 }
 
 const useStyles = makeStyles((theme) => ({
   inputContainer: {
     width: "80%",
     marginTop: "40px",
+    margin: "auto",
   },
   inputRow: {
     height: "40px",
@@ -24,14 +35,15 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "left",
     width: "60%",
     position: "relative",
-    left: "15%",
+    left: "80px",
   },
   inputField: {
+    width: "100px",
     position: "absolute",
-    right: "0",
+    right: "80px",
   },
   bottomContainer: {
-    margin: "60px 0px 40px",
+    margin: "40px 0px 20px",
   },
   bottomButton: {
     margin: "5px",
@@ -97,61 +109,53 @@ const InputRow = function (props: any) {
   if (props.percentage) {
     inputProps = { ...inputProps, inputComponent: PercentageFormat };
   }
-  console.log(inputProps);
+  const shouldFocus = props.focus === props.name;
   return (
-    <div className={classes.inputRow}>
-      <Typography variant="body1" className={classes.inputLabel}>
-        {props.question}
-      </Typography>
-      <TextField
-        className={classes.inputField}
-        size="small"
-        value={props.value[props.name]}
-        name={props.name}
-        onChange={props.onChange}
-        variant="outlined"
-        label={props.label}
-        InputProps={inputProps}
-      ></TextField>
-    </div>
+    <Fade in={props.show} timeout={250}>
+      <div
+        className={classes.inputRow}
+        style={props.show ? {} : { display: "none" }}
+      >
+        <Typography variant="body1" className={classes.inputLabel}>
+          {props.question}
+        </Typography>
+        <TextField
+          className={classes.inputField}
+          size="small"
+          value={props.value[props.name]}
+          name={props.name}
+          onChange={props.onChange}
+          variant="outlined"
+          label={props.label}
+          InputProps={inputProps}
+          inputRef={(input) => input && shouldFocus && input.focus()}
+        ></TextField>
+      </div>
+    </Fade>
   );
-};
-
-interface IFormData {
-  orders?: string;
-  aov?: string;
-  cvr?: string;
-  costs?: string;
-  cac?: string;
-}
-
-const initialFormData = {
-  orders: undefined,
-  aov: undefined,
-  cvr: undefined,
-  costs: undefined,
-  cac: undefined,
 };
 
 const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
   const classes = useStyles();
-  const [formData, setFormData] = useState<IFormData>(initialFormData);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value);
-    setFormData({ ...formData, [event.target.name]: event.target.value });
-  };
+  const { handleFormSubmit, handleChange } = props;
+  const { data: formData, display: formDisplay, focus } = props.formState;
 
   return (
     <div>
       <Typography variant="h5">Onboarding Questions</Typography>
-      <div className={classes.inputContainer}>
+      <form
+        onSubmit={(e) => handleFormSubmit(e)}
+        className={classes.inputContainer}
+      >
         <InputRow
-          question="1. How many orders per week?"
+          question="1. How many orders in Shopify per month?"
           label="# Orders"
           name="orders"
           value={formData}
           onChange={handleChange}
+          show={formDisplay.orders}
+          focus={focus}
         />
         <InputRow
           question="2. What's your Average Order Value?"
@@ -160,6 +164,8 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
           currency
           value={formData}
           onChange={handleChange}
+          show={formDisplay.aov}
+          focus={focus}
         />
         <InputRow
           question="3. What's your Conversion Rate?"
@@ -168,6 +174,8 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
           percentage
           value={formData}
           onChange={handleChange}
+          show={formDisplay.cvr}
+          focus={focus}
         />
         <InputRow
           question="4. What are your Gross Costs, including Shipping?"
@@ -176,6 +184,8 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
           currency
           value={formData}
           onChange={handleChange}
+          show={formDisplay.cogs}
+          focus={focus}
         />
         <InputRow
           question="5. What's your blended average Cost of Acquisition?"
@@ -184,24 +194,22 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
           currency
           value={formData}
           onChange={handleChange}
+          show={formDisplay.cac}
+          focus={focus}
         />
-      </div>
-
-      <div className={classes.bottomButton}>
-        <Button
-          className={classes.bottomButton}
-          variant="contained"
-          size="large"
-          color="secondary"
-          type="submit"
-          onClick={() => {
-            props.handleNextScreen();
-          }}
-        >
-          Continue
-        </Button>
-        or press <strong>ENTER</strong>
-      </div>
+        <div className={classes.bottomContainer}>
+          <Button
+            className={classes.bottomButton}
+            variant="contained"
+            size="large"
+            color="secondary"
+            type="submit"
+          >
+            Continue
+          </Button>
+          or press <strong>ENTER</strong>
+        </div>
+      </form>
     </div>
   );
 };

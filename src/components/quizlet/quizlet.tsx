@@ -50,11 +50,74 @@ const CarouselItem: React.FC<any> = (props) => {
   ) : null;
 };
 
+export interface IFormState {
+  data: { [index: string]: string };
+  display: { [index: string]: boolean };
+  focus: string;
+}
+
+const initialFormState = {
+  data: {
+    orders: "",
+    aov: "",
+    cvr: "",
+    cogs: "",
+    cac: "",
+  },
+  display: {
+    orders: true,
+    aov: false,
+    cvr: false,
+    cogs: false,
+    cac: false,
+  },
+  focus: "orders",
+};
+
 const Quizlet: React.FC<QuizletProps> = () => {
   const classes = useStyles();
   const slideTransitionTimeout = 500;
 
   const [currentScreen, setCurrentScreen] = useState(SCREENS.WelcomeScreen);
+  const [formState, setFormState] = useState<IFormState>(initialFormState);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormState({
+      ...formState,
+      data: {
+        ...formState.data,
+        [event.target.name]: event.target.value,
+      },
+    });
+  };
+
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    console.log(event);
+    event.preventDefault();
+    var lastDisplayed = "";
+    var firstHidden = "";
+    for (const [key, value] of Object.entries(formState.display)) {
+      if (value) {
+        lastDisplayed = key;
+      } else {
+        firstHidden = key;
+        break;
+      }
+    }
+    if (!firstHidden) {
+      handleNextScreen();
+    }
+    if (formState.data[lastDisplayed]) {
+      setFormState({
+        ...formState,
+        display: {
+          ...formState.display,
+          [firstHidden]: true,
+        },
+        focus: firstHidden,
+      });
+    }
+  };
 
   const handleNextScreen = function () {
     if (currentScreen === SCREENS.WelcomeScreen) {
@@ -77,7 +140,14 @@ const Quizlet: React.FC<QuizletProps> = () => {
       <CarouselItem
         display={currentScreen === SCREENS.OnboardingScreen}
         active={currentScreen === SCREENS.OnboardingScreen}
-        child={<OnboardingScreen handleNextScreen={handleNextScreen} />}
+        child={
+          <OnboardingScreen
+            handleNextScreen={handleNextScreen}
+            formState={formState}
+            handleChange={handleChange}
+            handleFormSubmit={handleFormSubmit}
+          />
+        }
         timeout={slideTransitionTimeout}
         isNext
       />
