@@ -1,6 +1,7 @@
 import { Typography, Button, makeStyles } from "@material-ui/core";
 import { ArrowForward } from "@material-ui/icons";
-import React, { useEffect } from "react";
+import React from "react";
+import useEnterKeyPress from "./useEnterKeyPress";
 
 export interface WelcomeScreenProps {
   handleNextScreen: Function;
@@ -20,18 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 const WelcomeScreen: React.FC<WelcomeScreenProps> = (props) => {
   const classes = useStyles();
-  useEffect(() => {
-    const listener = (event: any) => {
-      if (event.code === "Enter" || event.code === "NumpadEnter") {
-        event.preventDefault();
-        props.handleNextScreen(); // This is my function call
-      }
-    };
-    document.addEventListener("keydown", listener);
-    return () => {
-      document.removeEventListener("keydown", listener);
-    };
-  }, []);
+  useEnterKeyPress(() => props.handleNextScreen())
 
   return (
     <form
