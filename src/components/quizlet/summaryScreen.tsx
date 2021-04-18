@@ -1,8 +1,6 @@
-import { Button, makeStyles, Table, Typography } from "@material-ui/core";
+import { Button, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
 import NumberFormat from "react-number-format";
-import { CurrencyFormat } from "../../utils/numberFormats";
-import theme from "../../utils/theme";
 import useEnterKeyPress from "../../utils/useEnterKeyPress";
 import { IFormState } from "./quizlet";
 

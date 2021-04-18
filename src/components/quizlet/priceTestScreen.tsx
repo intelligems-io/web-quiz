@@ -1,11 +1,13 @@
 import React from "react";
 import { Typography, Button, makeStyles } from "@material-ui/core";
+
 import useEnterKeyPress from "../../utils/useEnterKeyPress";
 import { InputRow } from "./helpers/inputRow";
 import { IFormState } from "./quizlet";
 
-export interface OnboardingScreenProps {
+export interface PriceTestScreenProps {
   handleNextScreen: Function;
+  handlePreviousScreen: Function;
   formState: IFormState;
   handleChange: Function;
   handleFormSubmit: Function;
@@ -25,10 +27,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
+const PriceTestScreen: React.FC<PriceTestScreenProps> = (props) => {
   const classes = useStyles();
 
-  const { handleFormSubmit, handleChange } = props;
+  const { handlePreviousScreen, handleFormSubmit, handleChange } = props;
   const { data: formData, display: formDisplay, focus } = props.formState;
   useEnterKeyPress(() => handleFormSubmit());
 
@@ -40,52 +42,23 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
         className={classes.inputContainer}
       >
         <InputRow
-          question="1. How many orders in Shopify per month?"
-          label="# Orders"
-          name="orders"
-          value={formData}
-          onChange={handleChange}
-          show={formDisplay.orders}
-          focus={focus}
-        />
-        <InputRow
-          question="2. What's your Average Order Value?"
-          label="AOV"
-          name="aov"
-          currency
-          value={formData}
-          onChange={handleChange}
-          show={formDisplay.aov}
-          focus={focus}
-        />
-        <InputRow
-          question="3. What's your Conversion Rate?"
-          label="CVR"
-          name="cvr"
+          question="1. How much do you want to increase pricing by (in %)?"
+          label="% Change"
+          name="priceChange"
           percentage
           value={formData}
           onChange={handleChange}
-          show={formDisplay.cvr}
+          show={formDisplay.priceChange}
           focus={focus}
         />
         <InputRow
-          question="4. What are your Gross Costs, including Shipping?"
-          label="COGS"
-          name="cogs"
-          currency
+          question="2. How much do you think it will affect conversion (in %)?"
+          label="% Change"
+          name="cvrChange"
+          percentage
           value={formData}
           onChange={handleChange}
-          show={formDisplay.cogs}
-          focus={focus}
-        />
-        <InputRow
-          question="5. What's your blended average Cost of Acquisition?"
-          label="CAC"
-          name="cac"
-          currency
-          value={formData}
-          onChange={handleChange}
-          show={formDisplay.cac}
+          show={formDisplay.cvrChange}
           focus={focus}
         />
         <div className={classes.bottomContainer}>
@@ -100,9 +73,22 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
           </Button>
           or press <strong>ENTER</strong>
         </div>
+
+        <div className={classes.bottomContainer}>
+          <Typography variant="h6">Need to make a change?</Typography>
+          <Button
+            className={classes.bottomButton}
+            variant="outlined"
+            size="large"
+            color="secondary"
+            onClick={() => handlePreviousScreen()}
+          >
+            Go back
+          </Button>{" "}
+        </div>
       </form>
     </div>
   );
 };
 
-export default OnboardingScreen;
+export default PriceTestScreen;
