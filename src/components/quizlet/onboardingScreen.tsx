@@ -3,6 +3,7 @@ import { Typography, Button, makeStyles } from "@material-ui/core";
 import useEnterKeyPress from "../../utils/useEnterKeyPress";
 import { InputRow } from "./helpers/inputRow";
 import { IFormState } from "./quizlet";
+import PressEnterText from "./helpers/PressEnterText";
 
 export interface OnboardingScreenProps {
   handleNextScreen: Function;
@@ -98,7 +99,7 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
           >
             Continue
           </Button>
-          or press <strong>ENTER</strong>
+          <PressEnterText />
         </div>
       </form>
     </div>

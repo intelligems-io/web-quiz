@@ -2,6 +2,7 @@ import { Button, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
 import NumberFormat from "react-number-format";
 import useEnterKeyPress from "../../utils/useEnterKeyPress";
+import PressEnterText from "./helpers/PressEnterText";
 import { IFormState } from "./quizlet";
 
 export interface SummaryScreenProps {
@@ -148,7 +149,7 @@ const SummaryScreen: React.FC<SummaryScreenProps> = (props) => {
         >
           Simulate a price test
         </Button>
-        or press <strong>ENTER</strong>
+        <PressEnterText />
       </div>
       <div className={classes.bottomContainer}>
         <Typography variant="h6">Need to make a change?</Typography>

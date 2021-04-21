@@ -1,4 +1,5 @@
 import { Fade, makeStyles, TextField, Typography } from "@material-ui/core";
+import { isMobile } from "react-device-detect";
 import { CurrencyFormat, PercentageFormat } from "../../../utils/numberFormats";
 
 const useStyles = makeStyles((theme) => ({
@@ -8,6 +9,9 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     position: "relative",
     display: "inline-flex",
+    ['@media (max-width:780px)']: {
+      height: '150px'
+    }
   },
   inputLabel: {
     lineHeight: "40px",
@@ -15,11 +19,19 @@ const useStyles = makeStyles((theme) => ({
     width: "60%",
     position: "relative",
     left: "80px",
+    ['@media (max-width:780px)']: {
+      left: '-13vw',
+      width: '80%'
+    }
   },
   inputField: {
     width: "100px",
     position: "absolute",
     right: "80px",
+    ['@media (max-width:780px)']: {
+      left: '150px',
+      top: '25px'
+    }
   },
 }));
 

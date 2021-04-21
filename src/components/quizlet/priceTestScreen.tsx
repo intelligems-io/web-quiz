@@ -4,6 +4,7 @@ import { Typography, Button, makeStyles } from "@material-ui/core";
 import useEnterKeyPress from "../../utils/useEnterKeyPress";
 import { InputRow } from "./helpers/inputRow";
 import { IFormState } from "./quizlet";
+import PressEnterText from "./helpers/PressEnterText";
 
 export interface PriceTestScreenProps {
   handleNextScreen: Function;
@@ -71,7 +72,7 @@ const PriceTestScreen: React.FC<PriceTestScreenProps> = (props) => {
           >
             Continue
           </Button>
-          or press <strong>ENTER</strong>
+          <PressEnterText />
         </div>
 
         <div className={classes.bottomContainer}>

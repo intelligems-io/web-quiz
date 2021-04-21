@@ -2,6 +2,7 @@ import { Typography, Button, makeStyles } from "@material-ui/core";
 import { ArrowForward } from "@material-ui/icons";
 import React from "react";
 import useEnterKeyPress from "../../utils/useEnterKeyPress";
+import PressEnterText from "./helpers/PressEnterText";
 
 export interface WelcomeScreenProps {
   handleNextScreen: Function;
@@ -44,7 +45,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = (props) => {
         >
           Let's get started
         </Button>
-        or press <strong>ENTER</strong>
+        <PressEnterText />
       </div>
     </form>
   );

@@ -28,6 +28,10 @@ const useStyles = makeStyles((theme) => ({
     height: "auto",
     textAlign: "center",
     transition: "max-height 2s ease-out",
+
+    ['@media (max-width:780px)']: {
+      width: '75%'
+    }
   },
 }));
 
