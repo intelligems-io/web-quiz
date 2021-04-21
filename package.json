@@ -24,6 +24,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "deploy": "npm run build && aws s3 sync build/ s3://intelli-react-quiz-prod && aws cloudfront create-invalidation --distribution-id EWLSWR7GWB4LL --paths \"/*\" ",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

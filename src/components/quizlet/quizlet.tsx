@@ -63,18 +63,18 @@ export interface IFormState {
 
 const initialOnboardingForm = {
   data: {
-    orders: "30",
-    aov: "45",
-    cvr: "10",
-    cogs: "15",
-    cac: "15",
+    orders: "",
+    aov: "",
+    cvr: "",
+    cogs: "",
+    cac: "",
   },
   display: {
     orders: true,
-    aov: true,
-    cvr: true,
-    cogs: true,
-    cac: true,
+    aov: false,
+    cvr: false,
+    cogs: false,
+    cac: false,
   },
   focus: "orders",
 };
