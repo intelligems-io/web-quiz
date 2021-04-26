@@ -16,6 +16,8 @@ const useStyles = makeStyles((theme) => ({
     width: "80%",
     marginTop: "40px",
     margin: "auto",
+    
+    
   },
   bottomContainer: {
     margin: "40px 0px 20px",
@@ -23,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
   bottomButton: {
     margin: "5px",
   },
+  flexSpace: {
+    justifyContent: "space-between"
+  }
 }));
 
 const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
@@ -34,7 +39,7 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
 
   return (
     <div>
-      <Typography variant="h5">Onboarding Questions</Typography>
+      <Typography variant="h4">Onboarding Questions</Typography>
       <form
         onSubmit={(e) => handleFormSubmit(e)}
         className={classes.inputContainer}

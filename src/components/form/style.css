@@ -1,0 +1,8 @@
+.bottomButton {
+    margin: 5px;
+    transition: 0.3s all;
+}
+.bottomButton:hover {
+    background-color: rgba(14, 47, 235, 0.45);
+    box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.05);
+}

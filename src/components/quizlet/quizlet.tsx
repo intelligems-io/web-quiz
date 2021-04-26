@@ -6,6 +6,7 @@ import PriceTestScreen from "./priceTestScreen";
 import ResultsScreen from "./resultsScreen";
 import SummaryScreen from "./summaryScreen";
 import WelcomeScreen from "./welcomeScreen";
+import HowdyScreen from "../form/howdy";
 
 export interface QuizletProps {}
 
@@ -15,6 +16,7 @@ const SCREENS = {
   SummaryScreen: "SummaryScreen",
   PriceTestScreen: "PriceTestScreen",
   ResultsScreen: "ResultsScreen",
+  HowdyScreen: "HowdyScreen"
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -190,7 +192,9 @@ const Quizlet: React.FC<QuizletProps> = () => {
 
   return (
     <Paper variant="elevation" className={classes.quizContainer}>
-      <CarouselItem
+      
+      
+     <CarouselItem
         display={currentScreen === SCREENS.WelcomeScreen}
         active={currentScreen === SCREENS.WelcomeScreen}
         child={
@@ -248,13 +252,27 @@ const Quizlet: React.FC<QuizletProps> = () => {
         active={currentScreen === SCREENS.ResultsScreen}
         child={
           <ResultsScreen
-            handleNextScreen={moveToScreen(SCREENS.WelcomeScreen)}
+            handleNextScreen={moveToScreen(SCREENS.HowdyScreen)}
             handlePreviousScreen={moveToScreen(SCREENS.PriceTestScreen)}
             onboardingFormState={onboardingFormState}
             pricingFormState={pricingFormState}
           />
         }
         timeout={slideTransitionTimeout}
+        isNext
+      /> 
+      <CarouselItem
+        display={currentScreen === SCREENS.HowdyScreen}
+        active={currentScreen === SCREENS.HowdyScreen}
+        child={
+          <HowdyScreen
+            handleNextScreen={moveToScreen(SCREENS.WelcomeScreen)}
+            formState={onboardingFormState}
+            handleChange={handleOnboardingChange}
+            handleFormSubmit={handleOnboardingFormSubmit}
+          />
+        }
+        timeout={{ enter: 0, exit: slideTransitionTimeout }}
         isNext
       />
     </Paper>

@@ -36,7 +36,7 @@ const PriceTestScreen: React.FC<PriceTestScreenProps> = (props) => {
 
   return (
     <div>
-      <Typography variant="h5">Test a Pricing Change</Typography>
+      <Typography variant="h4">Test a Pricing Change</Typography>
       <form
         onSubmit={(e) => handleFormSubmit(e)}
         className={classes.inputContainer}
