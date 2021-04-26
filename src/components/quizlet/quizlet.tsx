@@ -93,6 +93,22 @@ const initialPriceTestForm = {
   focus: "priceChange",
 };
 
+const initialHowdyForm = {
+  data: {
+    name1: "",
+    name2: "",
+    email: "",
+    cname: "",
+  },
+  display: {
+    name1: true,
+    name2: false,
+    email: false,
+    cname: false,
+  },
+  focus: "name1",
+};
+
 const Quizlet: React.FC<QuizletProps> = () => {
   const classes = useStyles();
   const slideTransitionTimeout = 500;
@@ -103,6 +119,10 @@ const Quizlet: React.FC<QuizletProps> = () => {
   );
   const [pricingFormState, setPricingFormState] = useState<IFormState>(
     initialPriceTestForm
+  );
+
+  const [howdyFormState, setHowdyFormState] = useState<IFormState>(
+    initialHowdyForm
   );
 
   const moveToScreen = (screen: string) => () => {
@@ -190,6 +210,45 @@ const Quizlet: React.FC<QuizletProps> = () => {
     }
   };
 
+  const handleHowdyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setHowdyFormState({
+      ...howdyFormState,
+      data: {
+        ...howdyFormState.data,
+        [event.target.name]: event.target.value,
+      },
+    });
+  };
+
+  const handleHowdyFormSubmit = (
+    event?: React.FormEvent<HTMLFormElement>
+  ) => {
+    if (event) event.preventDefault();
+    var lastDisplayed = "";
+    var firstHidden = "";
+    for (const [key, value] of Object.entries(howdyFormState.display)) {
+      if (value) {
+        lastDisplayed = key;
+      } else {
+        firstHidden = key;
+        break;
+      }
+    }
+    if (!firstHidden && howdyFormState.data[lastDisplayed]) {
+      moveToScreen(SCREENS.WelcomeScreen)();
+    }
+    if (howdyFormState.data[lastDisplayed] && firstHidden) {
+      setHowdyFormState({
+        ...howdyFormState,
+        display: {
+          ...howdyFormState.display,
+          [firstHidden]: true,
+        },
+        focus: firstHidden,
+      });
+    }
+  };
+
   return (
     <Paper variant="elevation" className={classes.quizContainer}>
       
@@ -267,9 +326,9 @@ const Quizlet: React.FC<QuizletProps> = () => {
         child={
           <HowdyScreen
             handleNextScreen={moveToScreen(SCREENS.WelcomeScreen)}
-            formState={onboardingFormState}
-            handleChange={handleOnboardingChange}
-            handleFormSubmit={handleOnboardingFormSubmit}
+            formState={howdyFormState}
+            handleChange={handleHowdyChange}
+            handleFormSubmit={handleHowdyFormSubmit}
           />
         }
         timeout={{ enter: 0, exit: slideTransitionTimeout }}

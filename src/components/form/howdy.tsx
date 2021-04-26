@@ -41,19 +41,15 @@ const HowdyScreen: React.FC<HowdyScreenProps> = (props) => {
   // initial state for snackbar
   const [open, setOpen] = React.useState(false);
 
-  // initial form values
-  const [values, setValues] = useState({ 
-    name1: '', 
-    name2: '', 
-    email: '', 
-    cname: ''
-  });
+  // initial form values => NOT USED ANYMORE
+  // const [values, setValues] = useState({ 
+  //   name1: '', 
+  //   name2: '', 
+  //   email: '', 
+  //   cname: ''
+  // });
 
-  const {
-    handleNextScreen,
-  } = props;
-
-  const { handleFormSubmit, handleChange } = props;
+  const { handleFormSubmit, handleChange, handleNextScreen } = props;
   const { data: formData, display: formDisplay, focus } = props.formState;
   useEnterKeyPress(() => handleFormSubmit());
 
@@ -73,88 +69,91 @@ const HowdyScreen: React.FC<HowdyScreenProps> = (props) => {
   };
 
   // API connection
-  const saveFormData = async () => {
-    const response = await fetch('https://dev.intelligems.io/track', {
-      method: 'POST',
-      body: JSON.stringify(formData)
-    });
-    if (response.status !== 200) {
-      throw new Error(`Request failed: ${response.status}`); 
-    } else{
-      console.log(response.status);
-    }
-  }
-  // data save
-  const onSubmit = async (event:any) => {
-    event.preventDefault(); // Prevent default submission
-    try {
-      await saveFormData();
-      console.log('Your registration was successfully submitted!');
-      console.log(formData)
-      setValues({
-        name1: '', 
-        name2: '', 
-        email: '', 
-        cname: ''
-      });
-    } catch (e) {
-      alert(`Registration failed! ${e.message}`);
-    }
-  }
-
-  // another attempt at API connection, it might work unsure 
-  // fetch('https://dev.intelligems.io/track', {
-  //   method: 'POST',
-  //   headers: { 'Content-Type': 'application/json' },
-  //   body: JSON.stringify(formData)
-  // }).then(r=>r.json().then(res=>{
-  //   if(res){
-  //     console.log(formData);
+  // const saveFormData = async () => {
+  //   const response = await fetch('https://dev.intelligems.io/track', {
+  //     method: 'POST',
+  //     body: JSON.stringify(formData)
+  //   });
+  //   if (response.status !== 200) {
+  //     throw new Error(`Request failed: ${response.status}`); 
+  //   } else{
+  //     console.log(response.status);
   //   }
-  // }));
+  // }
+  // // data save
+  // const onSubmit = async (event:any) => {
+  //   event.preventDefault(); // Prevent default submission
+  //   try {
+  //     await saveFormData();
+  //     console.log('Your registration was successfully submitted!');
+  //     console.log(formData)
+  //     setValues(formData);
+  //   } catch (e) {
+  //     alert(`Registration failed! ${e.message}`);
+  //   }
+  // }
+
+// one of my previous fetch versions, unsure how efficient this is since it is not in an await or using async
+  fetch('https://dev.intelligems.io/track', {
+    method: 'POST',
+    body: JSON.stringify(formData),
+    headers: {
+        'Content-Type': 'application/json'
+    }
+  }).then(response => {
+    if (response.status !== 200) {
+      console.log('Somthing happened wrong');
+      } else {
+        console.log(response);
+        console.log(response.status);
+        console.log(formData)
+       return response;
+      }
+  }).catch(err => err);
+
 
   return (
     <div>
       <Typography variant="h4">Let Us Get to Know You!</Typography>
       <form
-        onSubmit={onSubmit}
+        onSubmit={(e) => handleFormSubmit(e)}
         className={classes.inputContainer}
       >
         <InputRow
           question="1. What is your first name?"
           label="First Name"
-          name="orders"
-          value={values.name1}
+          name="name1"
+          value={formData}
           onChange={handleChange}
-          show={formDisplay.orders}
+          show={formDisplay.name1}
           focus={focus}
           
         />
         <InputRow
           question="2. What is your last name?"
           label="Last Name"
-          name="aov"
-          value={values.name2}
+          name="name2"
+          value={formData}
           onChange={handleChange}
-          show={formDisplay.aov}
+          show={formDisplay.name2}
           focus={focus}
         />
         <InputRow
           question="3. What is your email address?"
           label="Email"
-          name="cvr"
-          value={values.email}
+          name="email"
+          value={formData}
           onChange={handleChange}
-          show={formDisplay.cvr}
+          show={formDisplay.email}
           focus={focus}
         />
         <InputRow
           question="4. What is your company name?"
           label="Company Name"
-          name="cogs"
-          value={values.cname}
+          name="cname"
+          value={formData}
           onChange={handleChange}
-          show={formDisplay.cogs}
+          show={formDisplay.cname}
           focus={focus}
         />
         <div className={classes.bottomContainer}>
