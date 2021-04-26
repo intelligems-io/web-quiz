@@ -19,11 +19,17 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "40px",
     margin: "auto",
   },
-  bottomContainer: {
-    margin: "40px 0px 20px",
+  bottomContainer1: {
+    marginTop: "30px",
+  },
+  bottomContainer2: {
+    marginTop: "20px",
   },
   bottomButton: {
     margin: "5px",
+  },
+  spacing1: {
+    marginTop: "10px",
   },
 }));
 
@@ -36,7 +42,7 @@ const PriceTestScreen: React.FC<PriceTestScreenProps> = (props) => {
 
   return (
     <div>
-      <Typography variant="h5">Test a Pricing Change</Typography>
+      <Typography variant="h4">Test a Pricing Change</Typography>
       <form
         onSubmit={(e) => handleFormSubmit(e)}
         className={classes.inputContainer}
@@ -61,12 +67,12 @@ const PriceTestScreen: React.FC<PriceTestScreenProps> = (props) => {
           show={formDisplay.cvrChange}
           focus={focus}
         />
-        <div className={classes.bottomContainer}>
+        <div className={classes.bottomContainer1}>
           <Button
             className={classes.bottomButton}
             variant="contained"
             size="large"
-            color="secondary"
+            color="primary"
             type="submit"
           >
             Continue
@@ -74,13 +80,13 @@ const PriceTestScreen: React.FC<PriceTestScreenProps> = (props) => {
           or press <strong>ENTER</strong>
         </div>
 
-        <div className={classes.bottomContainer}>
+        <div className={classes.bottomContainer2}>
           <Typography variant="h6">Need to make a change?</Typography>
           <Button
             className={classes.bottomButton}
             variant="outlined"
             size="large"
-            color="secondary"
+            color="primary"
             onClick={() => handlePreviousScreen()}
           >
             Go back

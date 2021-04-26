@@ -16,13 +16,18 @@ const useStyles = makeStyles((theme) => ({
     width: "80%",
     marginTop: "40px",
     margin: "auto",
+    
+    
   },
-  bottomContainer: {
+  bottomContainer: {     
     margin: "40px 0px 20px",
   },
   bottomButton: {
     margin: "5px",
   },
+  flexSpace: {
+    justifyContent: "space-between"
+  }
 }));
 
 const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
@@ -34,7 +39,7 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
 
   return (
     <div>
-      <Typography variant="h5">Onboarding Questions</Typography>
+      <Typography variant="h4">Onboarding Questions</Typography>
       <form
         onSubmit={(e) => handleFormSubmit(e)}
         className={classes.inputContainer}
@@ -43,6 +48,7 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
           question="1. How many orders in Shopify per month?"
           label="# Orders"
           name="orders"
+          noSymbol
           value={formData}
           onChange={handleChange}
           show={formDisplay.orders}
@@ -57,7 +63,7 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
           onChange={handleChange}
           show={formDisplay.aov}
           focus={focus}
-        />
+        />   
         <InputRow
           question="3. What's your Conversion Rate?"
           label="CVR"
@@ -93,7 +99,7 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
             className={classes.bottomButton}
             variant="contained"
             size="large"
-            color="secondary"
+            color="primary"
             type="submit"
           >
             Continue

@@ -1,23 +1,24 @@
 import { Fade, makeStyles, TextField, Typography } from "@material-ui/core";
-import { CurrencyFormat, PercentageFormat } from "../../../utils/numberFormats";
+import { CurrencyFormat, PercentageFormat, RegularFormat} from "../../../utils/numberFormats";
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
     height: "40px",
-    margin: "6px",
+    margin: "20px",
     width: "100%",
-    position: "relative",
+    //position: "relative",
     display: "inline-flex",
   },
   inputLabel: {
+    
     lineHeight: "40px",
     textAlign: "left",
     width: "60%",
-    position: "relative",
+    //position: "relative",
     left: "80px",
   },
   inputField: {
-    width: "100px",
+    width: "100",
     position: "absolute",
     right: "80px",
   },
@@ -26,12 +27,17 @@ const useStyles = makeStyles((theme) => ({
 export const InputRow = function (props: any) {
   const classes = useStyles();
   var inputProps = {};
+
   if (props.currency) {
     inputProps = { ...inputProps, inputComponent: CurrencyFormat };
   }
   if (props.percentage) {
     inputProps = { ...inputProps, inputComponent: PercentageFormat };
   }
+  if (props.noSymbol) {
+    inputProps = { ...inputProps, inputComponent: RegularFormat };
+  }
+
   const shouldFocus = props.focus === props.name;
   return (
     <Fade in={props.show} timeout={250}>
@@ -44,7 +50,6 @@ export const InputRow = function (props: any) {
         </Typography>
         <TextField
           className={classes.inputField}
-          size="small"
           value={props.value[props.name]}
           name={props.name}
           onChange={props.onChange}

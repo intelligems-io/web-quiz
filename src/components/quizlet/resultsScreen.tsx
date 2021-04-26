@@ -9,19 +9,21 @@ export interface ResultsScreenProps {
   pricingFormState: IFormState;
   handleNextScreen: Function;
   handlePreviousScreen: Function;
+  customerName: string;
 }
 
 const useStyles = makeStyles((theme) => ({
   summaryTable: {
-    width: "60%",
+    width: "75%",
     textAlign: "center",
+    justifyContent: "center",
     margin: "auto",
     marginTop: "5px",
   },
   summaryRow: { verticalAlign: "top" },
   summaryField: { paddingTop: "25px" },
   kpiLabel: {
-    fontWeight: 700,
+    fontWeight: 700,   
   },
   bottomContainer: {
     marginTop: "40px",
@@ -48,7 +50,7 @@ const calculateSummaryMetrics = (data: any) => ({
 
 const calculateResultsMetrics = (data: any, pricing: any) => {
   const cvrChange = Number(pricing.cvrChange) / 100;
-  const cvr = Number(data.cvr) * (1 - cvrChange);
+  const cvr = Number(data.cvr) * (1 - cvrChange);    
   const priceChange = Number(pricing.priceChange) / 100;
   const orders = +(Number(data.orders) * (1 - cvrChange)).toFixed(1);
   const aov = +(Number(data.aov) * (1 + priceChange)).toFixed(2);
@@ -74,15 +76,22 @@ const ResultsScreen: React.FC<ResultsScreenProps> = (props) => {
     handleNextScreen,
     onboardingFormState,
     pricingFormState,
+    customerName,
   } = props;
   const metrics = calculateSummaryMetrics(onboardingFormState.data);
   const results = calculateResultsMetrics(
     onboardingFormState.data,
     pricingFormState.data
   );
-  // useEnterKeyPress(() => handleNextScreen());
+
+  useEnterKeyPress(() => handleNextScreen());
   return (
     <div>
+      {
+        (customerName.valueOf() !== "") 
+          ? <h1>Thank you {customerName}!</h1>
+        : <div></div>
+      }
       <Typography variant="h5">Effect of a price test</Typography>
       <table className={classes.summaryTable}>
         <tbody>
@@ -99,6 +108,8 @@ const ResultsScreen: React.FC<ResultsScreenProps> = (props) => {
                   thousandSeparator
                   value={metrics.revenue}
                   displayType={"text"}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
                 />
               </Typography>
               <Typography variant="body1">
@@ -120,6 +131,8 @@ const ResultsScreen: React.FC<ResultsScreenProps> = (props) => {
                   thousandSeparator
                   value={results.revenue}
                   displayType={"text"}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
                 />
               </Typography>
               <Typography variant="body1">
@@ -148,6 +161,8 @@ const ResultsScreen: React.FC<ResultsScreenProps> = (props) => {
                   thousandSeparator
                   value={metrics.totalCost}
                   displayType={"text"}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
                 />
               </Typography>
               <Typography variant="body1">
@@ -176,6 +191,8 @@ const ResultsScreen: React.FC<ResultsScreenProps> = (props) => {
                   thousandSeparator
                   value={results.totalCost}
                   displayType={"text"}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
                 />
               </Typography>
               <Typography variant="body1">
@@ -211,6 +228,8 @@ const ResultsScreen: React.FC<ResultsScreenProps> = (props) => {
                   thousandSeparator
                   value={metrics.totalProfit}
                   displayType={"text"}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
                 />
               </Typography>
             </td>
@@ -221,6 +240,8 @@ const ResultsScreen: React.FC<ResultsScreenProps> = (props) => {
                   thousandSeparator
                   value={results.totalProfit}
                   displayType={"text"}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
                 />
               </Typography>
             </td>
@@ -228,7 +249,20 @@ const ResultsScreen: React.FC<ResultsScreenProps> = (props) => {
         </tbody>
       </table>
       <div className={classes.bottomContainer}>
-        {/* <Typography variant="h6">Looking good?</Typography> */}
+        <Typography variant="h6">Looking good?</Typography>
+        {
+        (customerName.valueOf() !== "") 
+        ? 
+          <Button
+          className={classes.bottomButton}
+          variant="contained"
+          size="large"
+          color="primary"
+          onClick={() => handleNextScreen()}
+         >
+          Back to Home
+        </Button>
+        : 
         <Button
           className={classes.bottomButton}
           variant="contained"
@@ -236,9 +270,10 @@ const ResultsScreen: React.FC<ResultsScreenProps> = (props) => {
           color="primary"
           onClick={() => handleNextScreen()}
         >
-          I want to learn more
+        I want to learn more
         </Button>
-        {/* or press <strong>ENTER</strong> */}
+      }
+        or press <strong>ENTER</strong>
       </div>
       <div className={classes.bottomContainer}>
         <Typography variant="h6">Need to make a change?</Typography>
@@ -246,11 +281,11 @@ const ResultsScreen: React.FC<ResultsScreenProps> = (props) => {
           className={classes.bottomButton}
           variant="outlined"
           size="large"
-          color="secondary"
+          color="primary"
           onClick={() => handlePreviousScreen()}
         >
           Go back
-        </Button>{" "}
+        </Button>{" "} 
       </div>
     </div>
   );
