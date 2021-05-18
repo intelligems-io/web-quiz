@@ -95,14 +95,12 @@ const initialPriceTestForm = {
 
 const initialInfoForm = {
   data: {
-    name1: "",
-    name2: "",
+    name: "",
     email: "",
     cname: "",
   },
   display: {
-    name1: true,
-    name2: false,
+    name: true,
     email: false,
     cname: false,
   },

@@ -41,14 +41,6 @@ const InfoScreen: React.FC<InfoScreenProps> = (props) => {
   // initial state for snackbar
   const [open, setOpen] = React.useState(false);
 
-  // initial form values => NOT USED ANYMORE
-  // const [values, setValues] = useState({ 
-  //   name1: '', 
-  //   name2: '', 
-  //   email: '', 
-  //   cname: ''
-  // });
-
   const { handleFormSubmit, handleChange, handleNextScreen } = props;
   const { data: formData, display: formDisplay, focus } = props.formState;
   useEnterKeyPress(() => handleFormSubmit());
@@ -120,26 +112,17 @@ const InfoScreen: React.FC<InfoScreenProps> = (props) => {
         className={classes.inputContainer}
       >
         <InputRow
-          question="1. What is your first name?"
-          label="First Name"
-          name="name1"
+          question="1. What is your name?"
+          label="Full Name"
+          name="name"
           value={formData}
           onChange={handleChange}
-          show={formDisplay.name1}
+          show={formDisplay.name}
           focus={focus}
           
         />
         <InputRow
-          question="2. What is your last name?"
-          label="Last Name"
-          name="name2"
-          value={formData}
-          onChange={handleChange}
-          show={formDisplay.name2}
-          focus={focus}
-        />
-        <InputRow
-          question="3. What is your email address?"
+          question="2. What is your email address?"
           label="Email"
           name="email"
           value={formData}
@@ -148,7 +131,7 @@ const InfoScreen: React.FC<InfoScreenProps> = (props) => {
           focus={focus}
         />
         <InputRow
-          question="4. What is your company name?"
+          question="3. What is your company name?"
           label="Company Name"
           name="cname"
           value={formData}
