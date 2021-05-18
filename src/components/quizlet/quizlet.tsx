@@ -238,7 +238,7 @@ const Quizlet: React.FC<QuizletProps> = () => {
     }
     // if all values are filled out in the form
     if (!firstHidden && infoFormState.data[lastDisplayed]) {
-      
+      // fetch to API 
         fetch('https://dev.intelligems.io/track', {
           method: 'POST',
           body: JSON.stringify({...infoFormState}),
@@ -248,11 +248,11 @@ const Quizlet: React.FC<QuizletProps> = () => {
         }).then(response => {
           if (response.status !== 200) {
             console.log('Somthing happened wrong');
-            } else {
+          } else {
+              console.log({...infoFormState});
               return response;
-            }
+          }
         }).catch(err => err);
-
       moveToScreen(SCREENS.WelcomeScreen)();
     }
     // set the info, move on to next input box in the form
