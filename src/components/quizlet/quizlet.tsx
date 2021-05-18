@@ -6,7 +6,7 @@ import PriceTestScreen from "./priceTestScreen";
 import ResultsScreen from "./resultsScreen";
 import SummaryScreen from "./summaryScreen";
 import WelcomeScreen from "./welcomeScreen";
-import HowdyScreen from "../form/howdy";
+import InfoScreen from "./infoScreen";
 
 export interface QuizletProps {}
 
@@ -16,7 +16,7 @@ const SCREENS = {
   SummaryScreen: "SummaryScreen",
   PriceTestScreen: "PriceTestScreen",
   ResultsScreen: "ResultsScreen",
-  HowdyScreen: "HowdyScreen"
+  InfoScreen: "InfoScreen"
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -93,7 +93,7 @@ const initialPriceTestForm = {
   focus: "priceChange",
 };
 
-const initialHowdyForm = {
+const initialInfoForm = {
   data: {
     name1: "",
     name2: "",
@@ -121,8 +121,8 @@ const Quizlet: React.FC<QuizletProps> = () => {
     initialPriceTestForm
   );
 
-  const [howdyFormState, setHowdyFormState] = useState<IFormState>(
-    initialHowdyForm
+  const [infoFormState, setInfoFormState] = useState<IFormState>(
+    initialInfoForm
   );
 
   const moveToScreen = (screen: string) => () => {
@@ -187,11 +187,13 @@ const Quizlet: React.FC<QuizletProps> = () => {
     if (event) event.preventDefault();
     var lastDisplayed = "";
     var firstHidden = "";
-    for (const [key, value] of Object.entries(pricingFormState.display)) {
-      if (value) {
-        lastDisplayed = key;
+    for (const [label, isDisplayed] of Object.entries(pricingFormState.display)) {
+      if (isDisplayed) {
+        lastDisplayed = label;
+        console.log("lastDisplayed value " , label);
       } else {
-        firstHidden = key;
+        firstHidden = label;
+        console.log("firstHidden value " , label);
         break;
       }
     }
@@ -210,23 +212,23 @@ const Quizlet: React.FC<QuizletProps> = () => {
     }
   };
 
-  const handleHowdyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setHowdyFormState({
-      ...howdyFormState,
+  const handleInfoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInfoFormState({
+      ...infoFormState,
       data: {
-        ...howdyFormState.data,
+        ...infoFormState.data,
         [event.target.name]: event.target.value,
       },
     });
   };
 
-  const handleHowdyFormSubmit = (
+  const handleInfoFormSubmit = (
     event?: React.FormEvent<HTMLFormElement>
   ) => {
     if (event) event.preventDefault();
     var lastDisplayed = "";
     var firstHidden = "";
-    for (const [key, value] of Object.entries(howdyFormState.display)) {
+    for (const [key, value] of Object.entries(infoFormState.display)) {
       if (value) {
         lastDisplayed = key;
       } else {
@@ -234,14 +236,31 @@ const Quizlet: React.FC<QuizletProps> = () => {
         break;
       }
     }
-    if (!firstHidden && howdyFormState.data[lastDisplayed]) {
+    // if all values are filled out in the form
+    if (!firstHidden && infoFormState.data[lastDisplayed]) {
+      
+        fetch('https://dev.intelligems.io/track', {
+          method: 'POST',
+          body: JSON.stringify({...infoFormState}),
+          headers: {
+              'Content-Type': 'application/json'
+          }
+        }).then(response => {
+          if (response.status !== 200) {
+            console.log('Somthing happened wrong');
+            } else {
+              return response;
+            }
+        }).catch(err => err);
+
       moveToScreen(SCREENS.WelcomeScreen)();
     }
-    if (howdyFormState.data[lastDisplayed] && firstHidden) {
-      setHowdyFormState({
-        ...howdyFormState,
+    // set the info, move on to next input box in the form
+    if (infoFormState.data[lastDisplayed] && firstHidden) {
+      setInfoFormState({
+        ...infoFormState,
         display: {
-          ...howdyFormState.display,
+          ...infoFormState.display,
           [firstHidden]: true,
         },
         focus: firstHidden,
@@ -251,8 +270,6 @@ const Quizlet: React.FC<QuizletProps> = () => {
 
   return (
     <Paper variant="elevation" className={classes.quizContainer}>
-      
-      
      <CarouselItem
         display={currentScreen === SCREENS.WelcomeScreen}
         active={currentScreen === SCREENS.WelcomeScreen}
@@ -311,7 +328,7 @@ const Quizlet: React.FC<QuizletProps> = () => {
         active={currentScreen === SCREENS.ResultsScreen}
         child={
           <ResultsScreen
-            handleNextScreen={moveToScreen(SCREENS.HowdyScreen)}
+            handleNextScreen={moveToScreen(SCREENS.InfoScreen)}
             handlePreviousScreen={moveToScreen(SCREENS.PriceTestScreen)}
             onboardingFormState={onboardingFormState}
             pricingFormState={pricingFormState}
@@ -321,14 +338,14 @@ const Quizlet: React.FC<QuizletProps> = () => {
         isNext
       /> 
       <CarouselItem
-        display={currentScreen === SCREENS.HowdyScreen}
-        active={currentScreen === SCREENS.HowdyScreen}
+        display={currentScreen === SCREENS.InfoScreen}
+        active={currentScreen === SCREENS.InfoScreen}
         child={
-          <HowdyScreen
+          <InfoScreen
             handleNextScreen={moveToScreen(SCREENS.WelcomeScreen)}
-            formState={howdyFormState}
-            handleChange={handleHowdyChange}
-            handleFormSubmit={handleHowdyFormSubmit}
+            formState={infoFormState}
+            handleChange={handleInfoChange}
+            handleFormSubmit={handleInfoFormSubmit}
           />
         }
         timeout={{ enter: 0, exit: slideTransitionTimeout }}

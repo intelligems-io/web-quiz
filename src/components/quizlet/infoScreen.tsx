@@ -1,13 +1,13 @@
 import React, { useEffect, useState} from "react";
 import { Typography, Button, makeStyles} from "@material-ui/core";
 import useEnterKeyPress from "../../utils/useEnterKeyPress";
-import { InputRow } from "../quizlet/helpers/inputRow";
-import { IFormState } from "../quizlet/quizlet";
+import { InputRow } from "./helpers/inputRow";
+import { IFormState } from "./quizlet";
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import "../form/style.css";
+//import "../form/style.css";
 
-export interface HowdyScreenProps {
+export interface InfoScreenProps {
   handleNextScreen: Function;
   formState: IFormState;
   handleChange: Function;
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const HowdyScreen: React.FC<HowdyScreenProps> = (props) => {
+const InfoScreen: React.FC<InfoScreenProps> = (props) => {
   const classes = useStyles();
   
   // initial state for snackbar
@@ -94,22 +94,22 @@ const HowdyScreen: React.FC<HowdyScreenProps> = (props) => {
   // }
 
 // one of my previous fetch versions, unsure how efficient this is since it is not in an await or using async
-  fetch('https://dev.intelligems.io/track', {
-    method: 'POST',
-    body: JSON.stringify(formData),
-    headers: {
-        'Content-Type': 'application/json'
-    }
-  }).then(response => {
-    if (response.status !== 200) {
-      console.log('Somthing happened wrong');
-      } else {
-        console.log(response);
-        console.log(response.status);
-        console.log(formData)
-       return response;
-      }
-  }).catch(err => err);
+  // fetch('https://dev.intelligems.io/track', {
+  //   method: 'POST',
+  //   body: JSON.stringify(formData),
+  //   headers: {
+  //       'Content-Type': 'application/json'
+  //   }
+  // }).then(response => {
+  //   if (response.status !== 200) {
+  //     console.log('Somthing happened wrong');
+  //     } else {
+  //       // console.log(response);
+  //       // console.log(response.status);
+  //       // console.log(formData)
+  //      return response;
+  //     }
+  // }).catch(err => err);
 
 
   return (
@@ -182,4 +182,4 @@ const HowdyScreen: React.FC<HowdyScreenProps> = (props) => {
   );
 };
 
-export default HowdyScreen;
+export default InfoScreen;
