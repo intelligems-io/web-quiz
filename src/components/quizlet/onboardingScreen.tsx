@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     
     
   },
-  bottomContainer: {
+  bottomContainer: {     
     margin: "40px 0px 20px",
   },
   bottomButton: {
@@ -63,7 +63,7 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
           onChange={handleChange}
           show={formDisplay.aov}
           focus={focus}
-        />
+        />   
         <InputRow
           question="3. What's your Conversion Rate?"
           label="CVR"

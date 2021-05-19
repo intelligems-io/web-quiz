@@ -23,7 +23,7 @@ const SCREENS = {
 
 const useStyles = makeStyles((theme) => ({
   quizContainer: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#FFFFFF",   
     position: "relative",
     width: "920px",
     margin: "auto",
@@ -106,7 +106,7 @@ const initialInfoForm = {
     email: false,
     cname: false,
   },
-  focus: "name1",
+  focus: "name",
 };
 
 // snackbar alert
@@ -127,8 +127,11 @@ const Quizlet: React.FC<QuizletProps> = () => {
   );
 
   const [infoFormState, setInfoFormState] = useState<IFormState>(
-    initialInfoForm
+    initialInfoForm       
   );
+
+  // set state for name data 
+  const [customerName , setCustomerName] = React.useState(infoFormState.data.name);
 
   // initial state for snackbar
   const [open, setOpen] = React.useState(false);
@@ -139,14 +142,14 @@ const Quizlet: React.FC<QuizletProps> = () => {
   };
 
   const handleOnboardingChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event:  React.ChangeEvent<HTMLInputElement>
   ) => {
     setOnboardingFormState({
       ...onboardingFormState,
       data: {
         ...onboardingFormState.data,
         [event.target.name]: event.target.value,
-      },
+      }
     });
   };
 
@@ -168,8 +171,6 @@ const Quizlet: React.FC<QuizletProps> = () => {
       moveToScreen(SCREENS.SummaryScreen)();
     }
     if (onboardingFormState.data[lastDisplayed] && firstHidden) {
-      console.log("firsthidden", firstHidden);
-      console.log("lastdisplayed", lastDisplayed);
       setOnboardingFormState({
         ...onboardingFormState,
         display: {
@@ -187,7 +188,7 @@ const Quizlet: React.FC<QuizletProps> = () => {
       data: {
         ...pricingFormState.data,
         [event.target.name]: event.target.value,
-      },
+      }
     });
   };
 
@@ -200,10 +201,8 @@ const Quizlet: React.FC<QuizletProps> = () => {
     for (const [label, isDisplayed] of Object.entries(pricingFormState.display)) {
       if (isDisplayed) {
         lastDisplayed = label;
-        console.log("lastDisplayed value " , label);
       } else {
         firstHidden = label;
-        console.log("firstHidden value " , label);
         break;
       }
     }
@@ -222,6 +221,7 @@ const Quizlet: React.FC<QuizletProps> = () => {
     }
   };
 
+
   const handleInfoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInfoFormState({
       ...infoFormState,
@@ -229,6 +229,7 @@ const Quizlet: React.FC<QuizletProps> = () => {
         ...infoFormState.data,
         [event.target.name]: event.target.value,
       },
+      focus: event.target.name,
     });
   };
 
@@ -246,7 +247,6 @@ const Quizlet: React.FC<QuizletProps> = () => {
         break;
       }
     }
-    // if all values are filled out in the form
     if (!firstHidden && infoFormState.data[lastDisplayed]) {
       // fetch to API 
         fetch('https://dev.intelligems.io/track', {
@@ -264,7 +264,8 @@ const Quizlet: React.FC<QuizletProps> = () => {
               return response;
           }
         }).catch(err => err);
-      //moveToScreen(SCREENS.WelcomeScreen)();
+      setCustomerName(infoFormState.data.name);
+      moveToScreen(SCREENS.ResultsScreen)();
     }
     // set the info, move on to next input box in the form
     if (infoFormState.data[lastDisplayed] && firstHidden) {
@@ -339,10 +340,11 @@ const Quizlet: React.FC<QuizletProps> = () => {
         active={currentScreen === SCREENS.ResultsScreen}
         child={
           <ResultsScreen
-            handleNextScreen={moveToScreen(SCREENS.InfoScreen)}
+            handleNextScreen={(infoFormState.data.name === "" ? moveToScreen(SCREENS.InfoScreen) : moveToScreen(SCREENS.WelcomeScreen))}
             handlePreviousScreen={moveToScreen(SCREENS.PriceTestScreen)}
             onboardingFormState={onboardingFormState}
             pricingFormState={pricingFormState}
+            customerName={customerName}
           />
         }
         timeout={slideTransitionTimeout}

@@ -9,6 +9,7 @@ export interface ResultsScreenProps {
   pricingFormState: IFormState;
   handleNextScreen: Function;
   handlePreviousScreen: Function;
+  customerName: string;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -21,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   summaryRow: { verticalAlign: "top" },
   summaryField: { paddingTop: "25px" },
   kpiLabel: {
-    fontWeight: 700,
+    fontWeight: 700,   
   },
   bottomContainer: {
     marginTop: "40px",
@@ -48,7 +49,7 @@ const calculateSummaryMetrics = (data: any) => ({
 
 const calculateResultsMetrics = (data: any, pricing: any) => {
   const cvrChange = Number(pricing.cvrChange) / 100;
-  const cvr = Number(data.cvr) * (1 - cvrChange);
+  const cvr = Number(data.cvr) * (1 - cvrChange);    
   const priceChange = Number(pricing.priceChange) / 100;
   const orders = +(Number(data.orders) * (1 - cvrChange)).toFixed(1);
   const aov = +(Number(data.aov) * (1 + priceChange)).toFixed(2);
@@ -74,15 +75,22 @@ const ResultsScreen: React.FC<ResultsScreenProps> = (props) => {
     handleNextScreen,
     onboardingFormState,
     pricingFormState,
+    customerName,
   } = props;
   const metrics = calculateSummaryMetrics(onboardingFormState.data);
   const results = calculateResultsMetrics(
     onboardingFormState.data,
     pricingFormState.data
   );
+
   // useEnterKeyPress(() => handleNextScreen());
   return (
     <div>
+      {
+        (customerName.valueOf() !== "") 
+          ? <h1>Thank you {customerName}!</h1>
+        : <div></div>
+      }
       <Typography variant="h5">Effect of a price test</Typography>
       <table className={classes.summaryTable}>
         <tbody>
@@ -229,6 +237,19 @@ const ResultsScreen: React.FC<ResultsScreenProps> = (props) => {
       </table>
       <div className={classes.bottomContainer}>
         {/* <Typography variant="h6">Looking good?</Typography> */}
+        {
+        (customerName.valueOf() !== "") 
+        ? 
+          <Button
+          className={classes.bottomButton}
+          variant="contained"
+          size="large"
+          color="primary"
+          onClick={() => handleNextScreen()}
+         >
+          Back to Home
+        </Button>
+        : 
         <Button
           className={classes.bottomButton}
           variant="contained"
@@ -236,8 +257,11 @@ const ResultsScreen: React.FC<ResultsScreenProps> = (props) => {
           color="primary"
           onClick={() => handleNextScreen()}
         >
-          I want to learn more
+        I want to learn more
         </Button>
+      }
+        
+        
         {/* or press <strong>ENTER</strong> */}
       </div>
       <div className={classes.bottomContainer}>
