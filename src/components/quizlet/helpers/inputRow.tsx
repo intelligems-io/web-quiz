@@ -1,5 +1,5 @@
 import { Fade, makeStyles, TextField, Typography } from "@material-ui/core";
-import { CurrencyFormat, PercentageFormat } from "../../../utils/numberFormats";
+import { CurrencyFormat, PercentageFormat, RegularFormat} from "../../../utils/numberFormats";
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
@@ -34,6 +34,9 @@ export const InputRow = function (props: any) {
   if (props.percentage) {
     inputProps = { ...inputProps, inputComponent: PercentageFormat };
   }
+  if (props.noSymbol) {
+    inputProps = { ...inputProps, inputComponent: RegularFormat };
+  }
 
   const shouldFocus = props.focus === props.name;
   return (
@@ -47,7 +50,6 @@ export const InputRow = function (props: any) {
         </Typography>
         <TextField
           className={classes.inputField}
-          //size="small"
           value={props.value[props.name]}
           name={props.name}
           onChange={props.onChange}

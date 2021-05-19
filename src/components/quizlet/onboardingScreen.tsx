@@ -48,6 +48,7 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
           question="1. How many orders in Shopify per month?"
           label="# Orders"
           name="orders"
+          noSymbol
           value={formData}
           onChange={handleChange}
           show={formDisplay.orders}

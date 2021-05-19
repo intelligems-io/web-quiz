@@ -7,6 +7,8 @@ import ResultsScreen from "./resultsScreen";
 import SummaryScreen from "./summaryScreen";
 import WelcomeScreen from "./welcomeScreen";
 import InfoScreen from "./infoScreen";
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 export interface QuizletProps {}
 
@@ -107,6 +109,11 @@ const initialInfoForm = {
   focus: "name1",
 };
 
+// snackbar alert
+function Alert(props:any) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 const Quizlet: React.FC<QuizletProps> = () => {
   const classes = useStyles();
   const slideTransitionTimeout = 500;
@@ -122,6 +129,9 @@ const Quizlet: React.FC<QuizletProps> = () => {
   const [infoFormState, setInfoFormState] = useState<IFormState>(
     initialInfoForm
   );
+
+  // initial state for snackbar
+  const [open, setOpen] = React.useState(false);
 
   const moveToScreen = (screen: string) => () => {
     console.log("moving to ", screen);
@@ -158,13 +168,15 @@ const Quizlet: React.FC<QuizletProps> = () => {
       moveToScreen(SCREENS.SummaryScreen)();
     }
     if (onboardingFormState.data[lastDisplayed] && firstHidden) {
+      console.log("firsthidden", firstHidden);
+      console.log("lastdisplayed", lastDisplayed);
       setOnboardingFormState({
         ...onboardingFormState,
         display: {
           ...onboardingFormState.display,
           [firstHidden]: true,
         },
-        focus: firstHidden,
+         focus: firstHidden,
       });
     }
   };
@@ -248,10 +260,11 @@ const Quizlet: React.FC<QuizletProps> = () => {
             console.log('Somthing happened wrong');
           } else {
               console.log({...infoFormState});
+              setOpen(true);
               return response;
           }
         }).catch(err => err);
-      moveToScreen(SCREENS.WelcomeScreen)();
+      //moveToScreen(SCREENS.WelcomeScreen)();
     }
     // set the info, move on to next input box in the form
     if (infoFormState.data[lastDisplayed] && firstHidden) {
@@ -349,6 +362,11 @@ const Quizlet: React.FC<QuizletProps> = () => {
         timeout={{ enter: 0, exit: slideTransitionTimeout }}
         isNext
       />
+        <Snackbar open={open} autoHideDuration={1000} onClose={() => setOpen(false)}>
+           <Alert onClose={() => setOpen(false)} severity="success">
+                 Thanks! Your information has been saved!
+           </Alert>
+         </Snackbar>
     </Paper>
   );
 };
