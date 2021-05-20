@@ -65,10 +65,10 @@ const InfoScreen: React.FC<InfoScreenProps> = (props) => {
         <InputRow
           question="3. What is your company name?"
           label="Company Name"
-          name="cname"
+          name="company"
           value={formData}
           onChange={handleChange}
-          show={formDisplay.cname}
+          show={formDisplay.company}
           focus={focus}
         />
         <div className={classes.bottomContainer}>

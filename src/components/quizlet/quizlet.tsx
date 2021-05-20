@@ -99,12 +99,12 @@ const initialInfoForm = {
   data: {
     name: "",
     email: "",
-    cname: "",
+    company: "",
   },
   display: {
     name: true,
     email: false,
-    cname: false,
+    company: false,
   },
   focus: "name",
 };
@@ -130,8 +130,14 @@ const Quizlet: React.FC<QuizletProps> = () => {
     initialInfoForm       
   );
 
+  const formInfo = {
+    "name": infoFormState.data.name,
+    "email": infoFormState.data.email,
+    "company": infoFormState.data.company,
+  };
+
   // set state for name data 
-  const [customerName , setCustomerName] = React.useState(infoFormState.data.name);
+  const [customerName , setCustomerName] = React.useState(formInfo.name);
 
   // initial state for snackbar
   const [open, setOpen] = React.useState(false);
@@ -221,7 +227,6 @@ const Quizlet: React.FC<QuizletProps> = () => {
     }
   };
 
-
   const handleInfoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInfoFormState({
       ...infoFormState,
@@ -248,10 +253,9 @@ const Quizlet: React.FC<QuizletProps> = () => {
       }
     }
     if (!firstHidden && infoFormState.data[lastDisplayed]) {
-      // fetch to API 
-        fetch('https://dev.intelligems.io/track', {
+        fetch('https://dev.intelligems.io/rfi', {
           method: 'POST',
-          body: JSON.stringify({...infoFormState}),
+          body: JSON.stringify(formInfo),
           headers: {
               'Content-Type': 'application/json'
           }
@@ -264,7 +268,7 @@ const Quizlet: React.FC<QuizletProps> = () => {
               return response;
           }
         }).catch(err => err);
-      setCustomerName(infoFormState.data.name);
+      setCustomerName(formInfo.name);
       moveToScreen(SCREENS.ResultsScreen)();
     }
     // set the info, move on to next input box in the form
