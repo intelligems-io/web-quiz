@@ -99,7 +99,7 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
             className={classes.bottomButton}
             variant="contained"
             size="large"
-            color="secondary"
+            color="primary"
             type="submit"
           >
             Continue

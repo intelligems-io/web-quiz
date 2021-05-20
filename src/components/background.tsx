@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
     //background: `linear-gradient(180deg, ${theme.palette.primary.dark} 0%, #8CA0F0 100%);`,
 
     // color picked your website to get gradient values
-    background: 'linear-gradient(#0500b0, #2f88c9)',
+    background: 'linear-gradient(#050552, #4370F0)',
     width: "100%",
     height: "100%",
     position: "fixed",

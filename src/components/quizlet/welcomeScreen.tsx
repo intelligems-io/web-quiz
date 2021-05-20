@@ -38,7 +38,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = (props) => {
           className={classes.bottomButton}
           variant="contained"
           size="large"
-          color="secondary"
+          color="primary"
           type="submit"
           endIcon={<ArrowForward />}
         >

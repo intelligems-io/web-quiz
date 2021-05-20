@@ -14,8 +14,9 @@ export interface ResultsScreenProps {
 
 const useStyles = makeStyles((theme) => ({
   summaryTable: {
-    width: "60%",
+    width: "75%",
     textAlign: "center",
+    justifyContent: "center",
     margin: "auto",
     marginTop: "5px",
   },
@@ -83,7 +84,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = (props) => {
     pricingFormState.data
   );
 
-  // useEnterKeyPress(() => handleNextScreen());
+  useEnterKeyPress(() => handleNextScreen());
   return (
     <div>
       {
@@ -236,7 +237,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = (props) => {
         </tbody>
       </table>
       <div className={classes.bottomContainer}>
-        {/* <Typography variant="h6">Looking good?</Typography> */}
+        <Typography variant="h6">Looking good?</Typography>
         {
         (customerName.valueOf() !== "") 
         ? 
@@ -260,9 +261,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = (props) => {
         I want to learn more
         </Button>
       }
-        
-        
-        {/* or press <strong>ENTER</strong> */}
+        or press <strong>ENTER</strong>
       </div>
       <div className={classes.bottomContainer}>
         <Typography variant="h6">Need to make a change?</Typography>
@@ -270,11 +269,11 @@ const ResultsScreen: React.FC<ResultsScreenProps> = (props) => {
           className={classes.bottomButton}
           variant="outlined"
           size="large"
-          color="secondary"
+          color="primary"
           onClick={() => handlePreviousScreen()}
         >
           Go back
-        </Button>{" "}
+        </Button>{" "} 
       </div>
     </div>
   );

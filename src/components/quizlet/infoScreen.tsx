@@ -63,7 +63,7 @@ const InfoScreen: React.FC<InfoScreenProps> = (props) => {
           focus={focus}
         />
         <InputRow
-          question="3. What is your company name?"
+          question="3. What is your company's name?"
           label="Company Name"
           name="company"
           value={formData}
@@ -76,7 +76,7 @@ const InfoScreen: React.FC<InfoScreenProps> = (props) => {
             className={classes.bottomButton}
             variant="contained"
             size="large"
-            color="secondary"
+            color="primary"
             type="submit"
           >
             Continue

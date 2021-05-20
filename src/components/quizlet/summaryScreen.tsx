@@ -12,7 +12,7 @@ export interface SummaryScreenProps {
 
 const useStyles = makeStyles((theme) => ({
   summaryTable: {
-    width: "60%",
+    width: "80%",
     textAlign: "center",
     margin: "auto",
     marginTop: "5px",
@@ -22,11 +22,17 @@ const useStyles = makeStyles((theme) => ({
   kpiLabel: {
     fontWeight: 700,
   },
-  bottomContainer: {
-    marginTop: "40px",
+  bottomContainer1: {
+    marginTop: "30px",
+  },
+  bottomContainer2: {
+    marginTop: "20px",
   },
   bottomButton: {
     margin: "5px",
+  },
+  spacing: {
+    marginTop: "10px",
   },
 }));
 
@@ -137,8 +143,9 @@ const SummaryScreen: React.FC<SummaryScreenProps> = (props) => {
           </tr>
         </tbody>
       </table>
-      <div className={classes.bottomContainer}>
+      <div className={classes.bottomContainer1}>
         <Typography variant="h6">Looking good?</Typography>
+        <div className={classes.spacing}> 
         <Button
           className={classes.bottomButton}
           variant="contained"
@@ -149,14 +156,15 @@ const SummaryScreen: React.FC<SummaryScreenProps> = (props) => {
           Simulate a price test
         </Button>
         or press <strong>ENTER</strong>
+        </div>
       </div>
-      <div className={classes.bottomContainer}>
+      <div className={classes.bottomContainer2}>
         <Typography variant="h6">Need to make a change?</Typography>
         <Button
           className={classes.bottomButton}
           variant="outlined"
           size="large"
-          color="secondary"
+          color="primary"
           onClick={() => handlePreviousScreen()}
         >
           Go back
