@@ -74,6 +74,8 @@ const SummaryScreen: React.FC<SummaryScreenProps> = (props) => {
                   thousandSeparator
                   value={metrics.revenue}
                   displayType={"text"}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
                 />
               </Typography>
               <Typography variant="body1">
@@ -102,7 +104,8 @@ const SummaryScreen: React.FC<SummaryScreenProps> = (props) => {
                   thousandSeparator
                   value={metrics.totalCost}
                   displayType={"text"}
-                  decimalScale={0}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
                 />
               </Typography>
               <Typography variant="body1">
@@ -111,7 +114,6 @@ const SummaryScreen: React.FC<SummaryScreenProps> = (props) => {
                   thousandSeparator
                   value={metrics.totalCogs}
                   displayType={"text"}
-                  decimalScale={0}
                 />
                 {" Gross + Shipping"}
               </Typography>
@@ -139,6 +141,8 @@ const SummaryScreen: React.FC<SummaryScreenProps> = (props) => {
                   thousandSeparator
                   value={metrics.totalProfit}
                   displayType={"text"}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
                 />
               </Typography>
             </td>
