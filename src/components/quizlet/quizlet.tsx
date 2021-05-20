@@ -9,6 +9,7 @@ import WelcomeScreen from "./welcomeScreen";
 import InfoScreen from "./infoScreen";
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import { isNamespaceImport } from "typescript";
 
 export interface QuizletProps {}
 
@@ -268,7 +269,8 @@ const Quizlet: React.FC<QuizletProps> = () => {
               return response;
           }
         }).catch(err => err);
-      setCustomerName(formInfo.name);
+        const name = formInfo.name.split(" ")[0];
+      setCustomerName(name);
       moveToScreen(SCREENS.ResultsScreen)();
     }
     // set the info, move on to next input box in the form
@@ -368,7 +370,11 @@ const Quizlet: React.FC<QuizletProps> = () => {
         timeout={{ enter: 0, exit: slideTransitionTimeout }}
         isNext
       />
-        <Snackbar open={open} autoHideDuration={1000} onClose={() => setOpen(false)}>
+        <Snackbar  
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }} 
+          open={open} 
+          autoHideDuration={4000} 
+          onClose={() => setOpen(false)}>
            <Alert onClose={() => setOpen(false)} severity="success">
                  Thanks! Your information has been saved!
            </Alert>

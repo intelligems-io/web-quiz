@@ -108,6 +108,8 @@ const ResultsScreen: React.FC<ResultsScreenProps> = (props) => {
                   thousandSeparator
                   value={metrics.revenue}
                   displayType={"text"}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
                 />
               </Typography>
               <Typography variant="body1">
@@ -129,6 +131,8 @@ const ResultsScreen: React.FC<ResultsScreenProps> = (props) => {
                   thousandSeparator
                   value={results.revenue}
                   displayType={"text"}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
                 />
               </Typography>
               <Typography variant="body1">
@@ -157,6 +161,8 @@ const ResultsScreen: React.FC<ResultsScreenProps> = (props) => {
                   thousandSeparator
                   value={metrics.totalCost}
                   displayType={"text"}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
                 />
               </Typography>
               <Typography variant="body1">
@@ -185,6 +191,8 @@ const ResultsScreen: React.FC<ResultsScreenProps> = (props) => {
                   thousandSeparator
                   value={results.totalCost}
                   displayType={"text"}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
                 />
               </Typography>
               <Typography variant="body1">
@@ -220,6 +228,8 @@ const ResultsScreen: React.FC<ResultsScreenProps> = (props) => {
                   thousandSeparator
                   value={metrics.totalProfit}
                   displayType={"text"}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
                 />
               </Typography>
             </td>
@@ -230,6 +240,8 @@ const ResultsScreen: React.FC<ResultsScreenProps> = (props) => {
                   thousandSeparator
                   value={results.totalProfit}
                   displayType={"text"}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
                 />
               </Typography>
             </td>
