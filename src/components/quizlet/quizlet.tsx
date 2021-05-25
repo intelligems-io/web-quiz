@@ -254,7 +254,7 @@ const Quizlet: React.FC<QuizletProps> = () => {
       }
     }
     if (!firstHidden && infoFormState.data[lastDisplayed]) {
-        fetch('https://dev.intelligems.io/rfi', {
+        fetch('https://api.intelligems.io/rfi', {
           method: 'POST',
           body: JSON.stringify(formInfo),
           headers: {
