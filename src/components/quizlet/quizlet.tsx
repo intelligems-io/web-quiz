@@ -118,7 +118,7 @@ const Quizlet: React.FC<QuizletProps> = () => {
   const classes = useStyles();
   const slideTransitionTimeout = 500;
 
-  const [currentScreen, setCurrentScreen] = useState(SCREENS.WelcomeScreen);
+  const [currentScreen, setCurrentScreen] = useState(SCREENS.InfoScreen);
   const [onboardingFormState, setOnboardingFormState] = useState<IFormState>(
     initialOnboardingForm
   );
