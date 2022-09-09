@@ -69,6 +69,7 @@ const PriceTestScreen: React.FC<PriceTestScreenProps> = (props) => {
         />
         <div className={classes.bottomContainer1}>
           <Button
+            disableElevation
             className={classes.bottomButton}
             variant="contained"
             size="large"
@@ -83,6 +84,7 @@ const PriceTestScreen: React.FC<PriceTestScreenProps> = (props) => {
         <div className={classes.bottomContainer2}>
           <Typography variant="h6">Need to make a change?</Typography>
           <Button
+            disableElevation
             className={classes.bottomButton}
             variant="outlined"
             size="large"

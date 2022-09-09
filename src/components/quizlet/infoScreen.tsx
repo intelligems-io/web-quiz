@@ -1,11 +1,8 @@
-import React, { useEffect, useState} from "react";
-import { Typography, Button, makeStyles} from "@material-ui/core";
+import React from "react";
+import { Button, makeStyles, Typography } from "@material-ui/core";
 import useEnterKeyPress from "../../utils/useEnterKeyPress";
 import { InputRow } from "./helpers/inputRow";
 import { IFormState } from "./quizlet";
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
-//import "../form/style.css";
 
 export interface InfoScreenProps {
   handleNextScreen: Function;
@@ -26,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   bottomButton: {
     margin: "5px",
     //background: 'rgba(255,255,255,0.3)',
-    transition: '0.3s all',
+    transition: "0.3s all",
   },
 }));
 
@@ -73,6 +70,7 @@ const InfoScreen: React.FC<InfoScreenProps> = (props) => {
         />
         <div className={classes.bottomContainer}>
           <Button
+            disableElevation
             className={classes.bottomButton}
             variant="contained"
             size="large"
@@ -85,7 +83,6 @@ const InfoScreen: React.FC<InfoScreenProps> = (props) => {
         </div>
       </form>
     </div>
-      
   );
 };
 

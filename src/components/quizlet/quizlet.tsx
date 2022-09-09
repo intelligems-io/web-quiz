@@ -1,15 +1,13 @@
 import { makeStyles, Paper, Slide } from "@material-ui/core";
 import * as React from "react";
-import { useState } from "react";
+import { FC, useState } from "react";
 import OnboardingScreen from "./onboardingScreen";
-import PriceTestScreen from "./priceTestScreen";
 import ResultsScreen from "./resultsScreen";
 import SummaryScreen from "./summaryScreen";
 import WelcomeScreen from "./welcomeScreen";
 import InfoScreen from "./infoScreen";
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
-import { isNamespaceImport } from "typescript";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 export interface QuizletProps {}
 
@@ -19,12 +17,12 @@ const SCREENS = {
   SummaryScreen: "SummaryScreen",
   PriceTestScreen: "PriceTestScreen",
   ResultsScreen: "ResultsScreen",
-  InfoScreen: "InfoScreen"
+  InfoScreen: "InfoScreen",
 };
 
 const useStyles = makeStyles((theme) => ({
   quizContainer: {
-    backgroundColor: "#FFFFFF",   
+    backgroundColor: "#FFFFFF",
     position: "relative",
     width: "920px",
     margin: "auto",
@@ -33,10 +31,11 @@ const useStyles = makeStyles((theme) => ({
     height: "auto",
     textAlign: "center",
     transition: "max-height 2s ease-out",
+    borderRadius: "15px",
   },
 }));
 
-const CarouselItem: React.FC<any> = (props) => {
+const CarouselItem: FC<any> = (props) => {
   return props.display ? (
     <div className="CarouselItem">
       {
@@ -84,17 +83,17 @@ const initialOnboardingForm = {
   focus: "orders",
 };
 
-const initialPriceTestForm = {
-  data: {
-    priceChange: "",
-    cvrChange: "",
-  },
-  display: {
-    priceChange: true,
-    cvrChange: false,
-  },
-  focus: "priceChange",
-};
+// const initialPriceTestForm = {
+//   data: {
+//     priceChange: "",
+//     cvrChange: "",
+//   },
+//   display: {
+//     priceChange: true,
+//     cvrChange: false,
+//   },
+//   focus: "priceChange",
+// };
 
 const initialInfoForm = {
   data: {
@@ -111,7 +110,7 @@ const initialInfoForm = {
 };
 
 // snackbar alert
-function Alert(props:any) {
+function Alert(props: any) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
@@ -123,40 +122,37 @@ const Quizlet: React.FC<QuizletProps> = () => {
   const [onboardingFormState, setOnboardingFormState] = useState<IFormState>(
     initialOnboardingForm
   );
-  const [pricingFormState, setPricingFormState] = useState<IFormState>(
-    initialPriceTestForm
-  );
+  // const [pricingFormState, setPricingFormState] =
+  //   useState<IFormState>(initialPriceTestForm);
 
-  const [infoFormState, setInfoFormState] = useState<IFormState>(
-    initialInfoForm       
-  );
+  const [infoFormState, setInfoFormState] =
+    useState<IFormState>(initialInfoForm);
 
   const formInfo = {
-    "name": infoFormState.data.name,
-    "email": infoFormState.data.email,
-    "company": infoFormState.data.company,
+    name: infoFormState.data.name,
+    email: infoFormState.data.email,
+    company: infoFormState.data.company,
   };
 
-  // set state for name data 
-  const [customerName , setCustomerName] = React.useState(formInfo.name);
+  // set state for name data
+  const [customerName, setCustomerName] = React.useState(formInfo.name);
 
   // initial state for snackbar
   const [open, setOpen] = React.useState(false);
 
   const moveToScreen = (screen: string) => () => {
-    console.log("moving to ", screen);
     setCurrentScreen(screen);
   };
 
   const handleOnboardingChange = (
-    event:  React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setOnboardingFormState({
       ...onboardingFormState,
       data: {
         ...onboardingFormState.data,
         [event.target.name]: event.target.value,
-      }
+      },
     });
   };
 
@@ -164,8 +160,8 @@ const Quizlet: React.FC<QuizletProps> = () => {
     event?: React.FormEvent<HTMLFormElement>
   ) => {
     if (event) event.preventDefault();
-    var lastDisplayed = "";
-    var firstHidden = "";
+    let lastDisplayed = "";
+    let firstHidden = "";
     for (const [key, value] of Object.entries(onboardingFormState.display)) {
       if (value) {
         lastDisplayed = key;
@@ -184,49 +180,51 @@ const Quizlet: React.FC<QuizletProps> = () => {
           ...onboardingFormState.display,
           [firstHidden]: true,
         },
-         focus: firstHidden,
-      });
-    }
-  };
-
-  const handlePricingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPricingFormState({
-      ...pricingFormState,
-      data: {
-        ...pricingFormState.data,
-        [event.target.name]: event.target.value,
-      }
-    });
-  };
-
-  const handlePricingFormSubmit = (
-    event?: React.FormEvent<HTMLFormElement>
-  ) => {
-    if (event) event.preventDefault();
-    var lastDisplayed = "";
-    var firstHidden = "";
-    for (const [label, isDisplayed] of Object.entries(pricingFormState.display)) {
-      if (isDisplayed) {
-        lastDisplayed = label;
-      } else {
-        firstHidden = label;
-        break;
-      }
-    }
-    if (!firstHidden && pricingFormState.data[lastDisplayed]) {
-      moveToScreen(SCREENS.ResultsScreen)();
-    }
-    if (pricingFormState.data[lastDisplayed] && firstHidden) {
-      setPricingFormState({
-        ...pricingFormState,
-        display: {
-          ...pricingFormState.display,
-          [firstHidden]: true,
-        },
         focus: firstHidden,
       });
     }
   };
+
+  // const handlePricingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setPricingFormState({
+  //     ...pricingFormState,
+  //     data: {
+  //       ...pricingFormState.data,
+  //       [event.target.name]: event.target.value,
+  //     },
+  //   });
+  // };
+  //
+  // const handlePricingFormSubmit = (
+  //   event?: React.FormEvent<HTMLFormElement>
+  // ) => {
+  //   if (event) event.preventDefault();
+  //   var lastDisplayed = "";
+  //   var firstHidden = "";
+  //   for (const [label, isDisplayed] of Object.entries(
+  //     pricingFormState.display
+  //   )) {
+  //     if (isDisplayed) {
+  //       lastDisplayed = label;
+  //     } else {
+  //       firstHidden = label;
+  //       break;
+  //     }
+  //   }
+  //   if (!firstHidden && pricingFormState.data[lastDisplayed]) {
+  //     moveToScreen(SCREENS.ResultsScreen)();
+  //   }
+  //   if (pricingFormState.data[lastDisplayed] && firstHidden) {
+  //     setPricingFormState({
+  //       ...pricingFormState,
+  //       display: {
+  //         ...pricingFormState.display,
+  //         [firstHidden]: true,
+  //       },
+  //       focus: firstHidden,
+  //     });
+  //   }
+  // };
 
   const handleInfoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInfoFormState({
@@ -239,12 +237,10 @@ const Quizlet: React.FC<QuizletProps> = () => {
     });
   };
 
-  const handleInfoFormSubmit = (
-    event?: React.FormEvent<HTMLFormElement>
-  ) => {
+  const handleInfoFormSubmit = (event?: React.FormEvent<HTMLFormElement>) => {
     if (event) event.preventDefault();
-    var lastDisplayed = "";
-    var firstHidden = "";
+    let lastDisplayed = "";
+    let firstHidden = "";
     for (const [key, value] of Object.entries(infoFormState.display)) {
       if (value) {
         lastDisplayed = key;
@@ -254,22 +250,22 @@ const Quizlet: React.FC<QuizletProps> = () => {
       }
     }
     if (!firstHidden && infoFormState.data[lastDisplayed]) {
-        fetch('https://api.intelligems.io/rfi', {
-          method: 'POST',
-          body: JSON.stringify(formInfo),
-          headers: {
-              'Content-Type': 'application/json'
-          }
-        }).then(response => {
+      fetch("https://api.intelligems.io/rfi", {
+        method: "POST",
+        body: JSON.stringify(formInfo),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
           if (response.status !== 200) {
-            console.log('Somthing happened wrong');
           } else {
-              console.log({...infoFormState});
-              setOpen(true);
-              return response;
+            setOpen(true);
+            return response;
           }
-        }).catch(err => err);
-        const name = formInfo.name.split(" ")[0];
+        })
+        .catch((err) => err);
+      const name = formInfo.name.split(" ")[0];
       setCustomerName(name);
       moveToScreen(SCREENS.ResultsScreen)();
     }
@@ -288,7 +284,7 @@ const Quizlet: React.FC<QuizletProps> = () => {
 
   return (
     <Paper variant="elevation" className={classes.quizContainer}>
-     <CarouselItem
+      <CarouselItem
         display={currentScreen === SCREENS.WelcomeScreen}
         active={currentScreen === SCREENS.WelcomeScreen}
         child={
@@ -318,7 +314,7 @@ const Quizlet: React.FC<QuizletProps> = () => {
         active={currentScreen === SCREENS.SummaryScreen}
         child={
           <SummaryScreen
-            handleNextScreen={moveToScreen(SCREENS.PriceTestScreen)}
+            handleNextScreen={moveToScreen(SCREENS.ResultsScreen)}
             handlePreviousScreen={moveToScreen(SCREENS.OnboardingScreen)}
             formState={onboardingFormState}
           />
@@ -326,36 +322,39 @@ const Quizlet: React.FC<QuizletProps> = () => {
         timeout={slideTransitionTimeout}
         isNext
       />
-      <CarouselItem
-        display={currentScreen === SCREENS.PriceTestScreen}
-        active={currentScreen === SCREENS.PriceTestScreen}
-        child={
-          <PriceTestScreen
-            handleNextScreen={moveToScreen(SCREENS.ResultsScreen)}
-            handlePreviousScreen={moveToScreen(SCREENS.SummaryScreen)}
-            formState={pricingFormState}
-            handleChange={handlePricingChange}
-            handleFormSubmit={handlePricingFormSubmit}
-          />
-        }
-        timeout={slideTransitionTimeout}
-        isNext
-      />
+      {/*<CarouselItem*/}
+      {/*  display={currentScreen === SCREENS.PriceTestScreen}*/}
+      {/*  active={currentScreen === SCREENS.PriceTestScreen}*/}
+      {/*  child={*/}
+      {/*    <PriceTestScreen*/}
+      {/*      handleNextScreen={moveToScreen(SCREENS.ResultsScreen)}*/}
+      {/*      handlePreviousScreen={moveToScreen(SCREENS.SummaryScreen)}*/}
+      {/*      formState={pricingFormState}*/}
+      {/*      handleChange={handlePricingChange}*/}
+      {/*      handleFormSubmit={handlePricingFormSubmit}*/}
+      {/*    />*/}
+      {/*  }*/}
+      {/*  timeout={slideTransitionTimeout}*/}
+      {/*  isNext*/}
+      {/*/>*/}
       <CarouselItem
         display={currentScreen === SCREENS.ResultsScreen}
         active={currentScreen === SCREENS.ResultsScreen}
         child={
           <ResultsScreen
-            handleNextScreen={(infoFormState.data.name === "" ? moveToScreen(SCREENS.InfoScreen) : moveToScreen(SCREENS.WelcomeScreen))}
-            handlePreviousScreen={moveToScreen(SCREENS.PriceTestScreen)}
+            handleNextScreen={
+              infoFormState.data.name === ""
+                ? moveToScreen(SCREENS.InfoScreen)
+                : moveToScreen(SCREENS.WelcomeScreen)
+            }
+            handlePreviousScreen={moveToScreen(SCREENS.SummaryScreen)}
             onboardingFormState={onboardingFormState}
-            pricingFormState={pricingFormState}
             customerName={customerName}
           />
         }
         timeout={slideTransitionTimeout}
         isNext
-      /> 
+      />
       <CarouselItem
         display={currentScreen === SCREENS.InfoScreen}
         active={currentScreen === SCREENS.InfoScreen}
@@ -370,15 +369,16 @@ const Quizlet: React.FC<QuizletProps> = () => {
         timeout={{ enter: 0, exit: slideTransitionTimeout }}
         isNext
       />
-        <Snackbar  
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }} 
-          open={open} 
-          autoHideDuration={4000} 
-          onClose={() => setOpen(false)}>
-           <Alert onClose={() => setOpen(false)} severity="success">
-                 Thanks! Your information has been saved!
-           </Alert>
-         </Snackbar>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={open}
+        autoHideDuration={4000}
+        onClose={() => setOpen(false)}
+      >
+        <Alert onClose={() => setOpen(false)} severity="success">
+          Thanks! Your information has been saved!
+        </Alert>
+      </Snackbar>
     </Paper>
   );
 };
