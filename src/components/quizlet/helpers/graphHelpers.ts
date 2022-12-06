@@ -51,14 +51,6 @@ export const graphValueFormatter = (
   }
 };
 
-export const graphLabelFormatter = (isCurrency: boolean, value: number) => {
-  if (isCurrency) {
-    return currencyFormatter(value, false);
-  } else {
-    return numberFormatters(value, false);
-  }
-};
-
 export const groupColors = [
   "#B8D3FF",
   ExtendedPrimary.light3,
@@ -75,22 +67,10 @@ export const groupColors = [
 // CVR
 
 export const generateData = (config: GraphConfig, data: any) => {
-  console.log(data);
   const cvr = data.cvr / 100;
   const aovChange = data.aov * 0.1;
   const cvrChange = cvr * 0.1;
   if (config.metrics[0] === "CVR") {
-    console.log("cvr", [
-      {
-        name: "10% Decrease",
-        value: cvr + cvrChange,
-      },
-      { name: "Control Group", value: cvr },
-      {
-        name: "10% Increase",
-        value: cvr - cvrChange,
-      },
-    ]);
     return [
       {
         name: "10% Decrease",
@@ -103,20 +83,6 @@ export const generateData = (config: GraphConfig, data: any) => {
       },
     ];
   } else if (config.metrics[0] === "REV_PER_VISITOR") {
-    console.log("rev", [
-      {
-        name: "10% Decrease",
-        value: (data.aov - aovChange) * (cvr + cvrChange),
-      },
-      {
-        name: "Control Group",
-        value: data.aov * cvr,
-      },
-      {
-        name: "10% Increase",
-        value: (data.aov + aovChange) * (cvr - cvrChange),
-      },
-    ]);
     return [
       {
         name: "10% Decrease",
@@ -132,20 +98,6 @@ export const generateData = (config: GraphConfig, data: any) => {
       },
     ];
   } else {
-    console.log("prof", [
-      {
-        name: "10% Decrease",
-        value: (data.aov - aovChange) * data.cogs * (cvr + cvrChange),
-      },
-      {
-        name: "Control Group",
-        value: data.aov * data.cogs * cvr,
-      },
-      {
-        name: "10% Increase",
-        value: (data.aov + aovChange) * data.cogs * (cvr - cvrChange),
-      },
-    ]);
     return [
       {
         name: "10% Decrease",

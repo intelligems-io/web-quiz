@@ -8,6 +8,7 @@ import WelcomeScreen from "./welcomeScreen";
 import InfoScreen from "./infoScreen";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import { initialInfoForm, initialOnboardingForm } from "../../utils/initials";
 
 export interface QuizletProps {}
 
@@ -65,24 +66,6 @@ export interface IFormState {
   focus: string;
 }
 
-const initialOnboardingForm = {
-  data: {
-    orders: "",
-    aov: "",
-    cvr: "",
-    cogs: "",
-    cac: "",
-  },
-  display: {
-    orders: true,
-    aov: false,
-    cvr: false,
-    cogs: false,
-    cac: false,
-  },
-  focus: "orders",
-};
-
 // const initialPriceTestForm = {
 //   data: {
 //     priceChange: "",
@@ -95,20 +78,6 @@ const initialOnboardingForm = {
 //   focus: "priceChange",
 // };
 
-const initialInfoForm = {
-  data: {
-    name: "",
-    email: "",
-    company: "",
-  },
-  display: {
-    name: true,
-    email: false,
-    company: false,
-  },
-  focus: "name",
-};
-
 // snackbar alert
 function Alert(props: any) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -118,7 +87,7 @@ const Quizlet: React.FC<QuizletProps> = () => {
   const classes = useStyles();
   const slideTransitionTimeout = 500;
 
-  const [currentScreen, setCurrentScreen] = useState(SCREENS.InfoScreen);
+  const [currentScreen, setCurrentScreen] = useState(SCREENS.WelcomeScreen);
   const [onboardingFormState, setOnboardingFormState] = useState<IFormState>(
     initialOnboardingForm
   );
@@ -184,47 +153,6 @@ const Quizlet: React.FC<QuizletProps> = () => {
       });
     }
   };
-
-  // const handlePricingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setPricingFormState({
-  //     ...pricingFormState,
-  //     data: {
-  //       ...pricingFormState.data,
-  //       [event.target.name]: event.target.value,
-  //     },
-  //   });
-  // };
-  //
-  // const handlePricingFormSubmit = (
-  //   event?: React.FormEvent<HTMLFormElement>
-  // ) => {
-  //   if (event) event.preventDefault();
-  //   var lastDisplayed = "";
-  //   var firstHidden = "";
-  //   for (const [label, isDisplayed] of Object.entries(
-  //     pricingFormState.display
-  //   )) {
-  //     if (isDisplayed) {
-  //       lastDisplayed = label;
-  //     } else {
-  //       firstHidden = label;
-  //       break;
-  //     }
-  //   }
-  //   if (!firstHidden && pricingFormState.data[lastDisplayed]) {
-  //     moveToScreen(SCREENS.ResultsScreen)();
-  //   }
-  //   if (pricingFormState.data[lastDisplayed] && firstHidden) {
-  //     setPricingFormState({
-  //       ...pricingFormState,
-  //       display: {
-  //         ...pricingFormState.display,
-  //         [firstHidden]: true,
-  //       },
-  //       focus: firstHidden,
-  //     });
-  //   }
-  // };
 
   const handleInfoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInfoFormState({
@@ -358,14 +286,7 @@ const Quizlet: React.FC<QuizletProps> = () => {
       <CarouselItem
         display={currentScreen === SCREENS.InfoScreen}
         active={currentScreen === SCREENS.InfoScreen}
-        child={
-          <InfoScreen
-            handleNextScreen={moveToScreen(SCREENS.WelcomeScreen)}
-            formState={infoFormState}
-            handleChange={handleInfoChange}
-            handleFormSubmit={handleInfoFormSubmit}
-          />
-        }
+        child={<InfoScreen />}
         timeout={{ enter: 0, exit: slideTransitionTimeout }}
         isNext
       />

@@ -1,40 +1,10 @@
 import React from "react";
-import { Button, makeStyles, Typography } from "@material-ui/core";
-import useEnterKeyPress from "../../utils/useEnterKeyPress";
-import { InputRow } from "./helpers/inputRow";
-import { IFormState } from "./quizlet";
+import { Typography } from "@material-ui/core";
 import { Widget } from "@typeform/embed-react";
 
-export interface InfoScreenProps {
-  handleNextScreen: Function;
-  formState: IFormState;
-  handleChange: Function;
-  handleFormSubmit: Function;
-}
+export interface InfoScreenProps {}
 
-const useStyles = makeStyles((theme) => ({
-  inputContainer: {
-    width: "80%",
-    marginTop: "40px",
-    margin: "auto",
-  },
-  bottomContainer: {
-    margin: "40px 0px 20px",
-  },
-  bottomButton: {
-    margin: "5px",
-    //background: 'rgba(255,255,255,0.3)',
-    transition: "0.3s all",
-  },
-}));
-
-const InfoScreen: React.FC<InfoScreenProps> = (props) => {
-  const classes = useStyles();
-
-  const { handleFormSubmit, handleChange, handleNextScreen } = props;
-  const { data: formData, display: formDisplay, focus } = props.formState;
-  useEnterKeyPress(() => handleFormSubmit());
-
+const InfoScreen: React.FC<InfoScreenProps> = () => {
   return (
     <div>
       <Typography style={{ marginBottom: "20px" }} variant={"h4"}>
