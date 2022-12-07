@@ -1,7 +1,7 @@
 import NumberFormat from "react-number-format";
 
 interface CustomFormatProps {
-  inputRef: (instance: NumberFormat | null) => void;
+  inputRef: (instance: any | null) => void;
   onChange: (event: { target: { name: string; value: string } }) => void;
   name: string;
 }

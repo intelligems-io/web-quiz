@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import { Typography, Button, makeStyles } from "@material-ui/core";
 import useEnterKeyPress from "../../utils/useEnterKeyPress";
 import { InputRow } from "./helpers/inputRow";
@@ -16,21 +16,19 @@ const useStyles = makeStyles((theme) => ({
     width: "80%",
     marginTop: "40px",
     margin: "auto",
-    
-    
   },
-  bottomContainer: {     
+  bottomContainer: {
     margin: "40px 0px 20px",
   },
   bottomButton: {
-    margin: "5px",
+    margin: "5px 10px 5px 5px",
   },
   flexSpace: {
-    justifyContent: "space-between"
-  }
+    justifyContent: "space-between",
+  },
 }));
 
-const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
+const OnboardingScreen: FC<OnboardingScreenProps> = (props) => {
   const classes = useStyles();
 
   const { handleFormSubmit, handleChange } = props;
@@ -63,7 +61,7 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
           onChange={handleChange}
           show={formDisplay.aov}
           focus={focus}
-        />   
+        />
         <InputRow
           question="3. What's your Conversion Rate?"
           label="CVR"
@@ -96,6 +94,7 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = (props) => {
         />
         <div className={classes.bottomContainer}>
           <Button
+            disableElevation
             className={classes.bottomButton}
             variant="contained"
             size="large"

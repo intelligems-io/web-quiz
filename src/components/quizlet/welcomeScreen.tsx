@@ -12,10 +12,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "20px",
   },
   bottomContainer: {
-    margin: "60px 0px 40px",
+    margin: "40px 0px 40px",
   },
   bottomButton: {
-    margin: "5px",
+    margin: "5px 10px 5px 5px",
   },
 }));
 
@@ -29,12 +29,14 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = (props) => {
         props.handleNextScreen();
       }}
     >
-      <Typography variant="h3">Welcome!</Typography>
+      <Typography variant="h3">Howdy!</Typography>
       <Typography className={classes.subHeader} variant="h5">
-        In 5 minutes, we’ll see if we can improve your store’s margins.
+        Let's improve your store's margins in 5 minutes.
+        {/*In 5 minutes, we’ll see if we can improve your store’s margins.*/}
       </Typography>
       <div className={classes.bottomContainer}>
         <Button
+          disableElevation
           className={classes.bottomButton}
           variant="contained"
           size="large"
@@ -42,7 +44,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = (props) => {
           type="submit"
           endIcon={<ArrowForward />}
         >
-          Let's get started
+          Get started
         </Button>
         or press <strong>ENTER</strong>
       </div>

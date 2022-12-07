@@ -1,5 +1,9 @@
 import { Fade, makeStyles, TextField, Typography } from "@material-ui/core";
-import { CurrencyFormat, PercentageFormat, RegularFormat} from "../../../utils/numberFormats";
+import {
+  CurrencyFormat,
+  PercentageFormat,
+  RegularFormat,
+} from "../../../utils/numberFormats";
 
 const useStyles = makeStyles((theme) => ({
   inputRow: {
@@ -8,9 +12,9 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     //position: "relative",
     display: "inline-flex",
+    alignItems: "center",
   },
   inputLabel: {
-    
     lineHeight: "40px",
     textAlign: "left",
     width: "60%",
@@ -57,7 +61,7 @@ export const InputRow = function (props: any) {
           label={props.label}
           InputProps={inputProps}
           inputRef={(input) => input && shouldFocus && input.focus()}
-        ></TextField>
+        />
       </div>
     </Fade>
   );

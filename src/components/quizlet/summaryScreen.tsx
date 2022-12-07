@@ -1,8 +1,15 @@
-import { Button, makeStyles, Typography } from "@material-ui/core";
-import React from "react";
+import {
+  Button,
+  CircularProgress,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
+import React, { FC, useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
 import useEnterKeyPress from "../../utils/useEnterKeyPress";
 import { IFormState } from "./quizlet";
+import { calculateSummaryMetrics } from "./helpers/graphHelpers";
+import { PriceLoading } from "./helpers/PriceLoading";
 
 export interface SummaryScreenProps {
   formState: IFormState;
@@ -29,36 +36,37 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "20px",
   },
   bottomButton: {
-    margin: "5px",
+    margin: "5px 10px 5px 5px",
   },
   spacing: {
     marginTop: "10px",
   },
 }));
 
-const calculateSummaryMetrics = (data: any) => ({
-  orders: Number(data.orders),
-  aov: Number(data.aov),
-  cvr: Number(data.cvr),
-  cogs: Number(data.cogs),
-  cac: Number(data.cac),
-  revenue: Number(data.aov) * Number(data.orders),
-  totalCogs: Number(data.cogs) * Number(data.orders),
-  totalAcq: Number(data.cac) * Number(data.orders),
-  totalCost: (Number(data.cac) + Number(data.cogs)) * Number(data.orders),
-  totalProfit:
-    (Number(data.aov) - Number(data.cac) - Number(data.cogs)) *
-    Number(data.orders),
-});
+export const sleep = (time: number) => {
+  return new Promise((resolve) => setTimeout(resolve, time));
+};
 
-const SummaryScreen: React.FC<SummaryScreenProps> = (props) => {
+const SummaryScreen: FC<SummaryScreenProps> = (props) => {
   const classes = useStyles();
+  const [isLoading, setIsLoading] = useState(false);
+
   const { handlePreviousScreen, handleNextScreen, formState } = props;
   const metrics = calculateSummaryMetrics(formState.data);
   useEnterKeyPress(() => handleNextScreen());
+
+  const onSubmit = async () => {
+    setIsLoading(true);
+    await sleep(5000);
+    setIsLoading(false);
+    handleNextScreen();
+  };
+
   return (
     <div>
-      <Typography variant="h5">Store Monthly Summary</Typography>
+      <Typography variant="h5" style={{ fontWeight: 600 }}>
+        Store Monthly Summary
+      </Typography>
       <table className={classes.summaryTable}>
         <tbody>
           <tr className={classes.summaryRow}>
@@ -124,7 +132,7 @@ const SummaryScreen: React.FC<SummaryScreenProps> = (props) => {
                   value={metrics.totalAcq}
                   displayType={"text"}
                 />
-                {" Acquistion"}
+                {" Acquisition"}
               </Typography>
             </td>
           </tr>
@@ -149,33 +157,45 @@ const SummaryScreen: React.FC<SummaryScreenProps> = (props) => {
           </tr>
         </tbody>
       </table>
-      <div className={classes.bottomContainer1}>
-        <Typography variant="h6">Looking good?</Typography>
-        <div className={classes.spacing}> 
-        <Button
-          className={classes.bottomButton}
-          variant="contained"
-          size="large"
-          color="primary"
-          onClick={() => handleNextScreen()}
-        >
-          Simulate a price test
-        </Button>
-        or press <strong>ENTER</strong>
+      {isLoading ? (
+        <PriceLoading />
+      ) : (
+        <div>
+          <div className={classes.bottomContainer1}>
+            <Typography variant="h6">Looking good?</Typography>
+            {isLoading ? (
+              <CircularProgress />
+            ) : (
+              <div className={classes.spacing}>
+                <Button
+                  disableElevation
+                  className={classes.bottomButton}
+                  variant="contained"
+                  size="large"
+                  color="primary"
+                  onClick={() => onSubmit()}
+                >
+                  Simulate a price test
+                </Button>
+                or press <strong>ENTER</strong>
+              </div>
+            )}
+          </div>
+          <div className={classes.bottomContainer2}>
+            <Typography variant="h6">Need to make a change?</Typography>
+            <Button
+              disableElevation
+              className={classes.bottomButton}
+              variant="outlined"
+              size="large"
+              color="primary"
+              onClick={() => handlePreviousScreen()}
+            >
+              Go back
+            </Button>
+          </div>
         </div>
-      </div>
-      <div className={classes.bottomContainer2}>
-        <Typography variant="h6">Need to make a change?</Typography>
-        <Button
-          className={classes.bottomButton}
-          variant="outlined"
-          size="large"
-          color="primary"
-          onClick={() => handlePreviousScreen()}
-        >
-          Go back
-        </Button>{" "}
-      </div>
+      )}
     </div>
   );
 };
